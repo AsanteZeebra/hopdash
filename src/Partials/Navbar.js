@@ -376,7 +376,7 @@ export const Branch_Navbar = () => {
 									</div>
 								</div>
 								<div className="d-grid mx-3 my-1">
-									<a href="javascript:void(0)" className="btn btn-primary">View all</a>
+									<Link to="" className="btn btn-primary">View all</Link>
 								</div>
 							</div>
 						</div>
