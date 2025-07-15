@@ -3,6 +3,10 @@ import Chart from "react-apexcharts";
 
 
 
+
+
+const Overview = () => {
+
 // Sparkline chart options and series
 const sparklineOptions = {
   chart: {
@@ -24,8 +28,6 @@ const sparklineSeries = [
   }
 ];
 
-
-const Overview = () => {
 
  const chartOptions = {
     chart: {
@@ -715,6 +717,11 @@ const stackedAreaChartSeries = [
                 </div>
    </>
   );
+
+  
 }
+
+
+
 
 export default Overview;

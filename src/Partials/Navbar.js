@@ -432,21 +432,7 @@ export const User_Navbar = () => {
 				
 				<div className="header-actions col">
 					<div className="d-lg-flex d-none">
-						<div className="dropdown">
-							<a className="dropdown-toggle d-flex px-3 py-4 position-relative" href="#!" role="button"
-								data-bs-toggle="dropdown" aria-expanded="false">
-								<i className="bi bi-grid fs-4 lh-1 text-secondary"></i>
-							</a>
-							
-						</div>
-						<div className="dropdown border-start">
-							<a className="dropdown-toggle d-flex px-3 py-4 position-relative" href="#!" role="button"
-								data-bs-toggle="dropdown" aria-expanded="false">
-								<i className="bi bi-exclamation-triangle fs-4 lh-1 text-secondary"></i>
-								<span className="count-label warning"></span>
-							</a>
-							
-						</div>
+						
 						<div className="dropdown border-start">
 							<a className="dropdown-toggle d-flex px-3 py-4 position-relative" href="#!" role="button"
 								data-bs-toggle="dropdown" aria-expanded="false">

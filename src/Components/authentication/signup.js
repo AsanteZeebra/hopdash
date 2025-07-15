@@ -121,6 +121,8 @@ const Signup = () => {
                     <option value="">-Select role-</option>
                     <option value="Admin">Super Admin</option>
                     <option value="Branch">Branch Admin</option>
+                    <option value="User">User</option>
+
                  
                   </select>
                   <p className="text-danger">{errors.role?.message}</p>

@@ -6,7 +6,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import "react-toastify/dist/ReactToastify.css";
 
+
+
+
 const Login = () => {
+  
+  
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -40,7 +45,7 @@ const Login = () => {
         const roleRoutes = {
           Admin: "/dashboard",
           Branch: "/branch",
-          User: "/user-dashboard", // default fallback
+          User: "/user", // default fallback
         };
 
         const userRole = result.user.role;

@@ -23,8 +23,6 @@ function App() {
          <Route path="/signup" element={<Signup />} /> 
         <Route path="/request-reset" element={<RequestReset />} />
         <Route path="/password-reset/:token" element={<ResetPassword />} />
-
-        
         <Route path="/overview" element={<Layout><Overview/></Layout>} />
         <Route path="/user" element={<User_layout><User/></User_layout>} />
         <Route path="/branch" element={<Branch_Layout><Branch/></Branch_Layout>}/>

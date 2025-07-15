@@ -472,12 +472,7 @@ export const User_Sidebar = () => {
                 </div>
                 <div className="sidebarMenuScroll">
                     <ul className="sidebar-menu">
-                        <li className={isActive("/dashboard") ? "active current-page" : ""}>
-                            <Link to="/dashboard">
-                                <i className="bi bi-pie-chart"></i>
-                                <span className="menu-text">Dashboard</span>
-                            </Link>
-                        </li>
+                       
                         <li className={isActive("/overview") ? "active current-page" : ""}>
                             <Link to="/overview">
                                 <i className="bi bi-bar-chart-line"></i>
@@ -582,25 +577,7 @@ export const User_Sidebar = () => {
                             </ul>
                         </li>
 
-                        {/* Dues & Payments */}
-                        <li className={`treeview${isTreeActive([
-                            "/dues-all",
-                            "/dues-summary"
-                        ]) ? " active current-page" : ""}${openMenus["dues"] ? " open" : ""}`}>
-                            <a href="#dues" onClick={e => { e.preventDefault(); handleTreeToggle("dues"); }}>
-                                <i className="bi bi-window-sidebar"></i>
-                                <span className="menu-text">Dues & Payments</span>
-                                {/* Removed duplicate chevron */}
-                            </a>
-                            <ul className="treeview-menu" style={{ display: openMenus["dues"] ? "block" : "none" }}>
-                                <li>
-                                    <Link to="/dues-all">All Dues</Link>
-                                </li>
-                                <li>
-                                    <Link to="/dues-summary">Payment Summary</Link>
-                                </li>
-                            </ul>
-                        </li>
+                      
 
                         {/* Events */}
                         <li className={`treeview${isTreeActive([
@@ -622,9 +599,7 @@ export const User_Sidebar = () => {
                                  <li>
                                     <Link to="/events-branch">Event Report</Link>
                                 </li>
-                                 <li>
-                                    <Link to="/events-branch">Branch Report</Link>
-                                </li>
+                                
                             </ul>
                         </li>
 
@@ -654,7 +629,7 @@ export const User_Sidebar = () => {
 
                        <li className={isActive("/overview") ? "active current-page" : ""}>
                             <Link to="/overview">
-                                <i className="bi bi-bar-chart-line"></i>
+                                <i className="bi bi-shut-down"></i>
                                 <span className="menu-text">Logout</span>
                             </Link>
                         </li>
