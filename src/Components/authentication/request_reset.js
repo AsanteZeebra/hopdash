@@ -21,7 +21,7 @@ const RequestReset = () => {
   setLoading(true);
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/api/send-reset-link",
+      "http://api.fremikecnsult.com/api/send-reset-link",
       { email: data.email },
       {
         headers: {

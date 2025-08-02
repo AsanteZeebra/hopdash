@@ -1,5 +1,13 @@
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
+import { useState, useEffect, useRef, useCallback } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useAuthValidation from "./Components/authentication/auth_validate";
+
+
 
 // Spline area chart options and series
 const areaChartOptions = {
@@ -81,6 +89,13 @@ const stackedAreaChartSeries = [
 ];
 
 const Dashboard = () => {
+
+
+  const { token, handleLogout } = useAuthValidation();
+
+
+
+
   const chartOptions = {
     chart: {
       id: "basic-bar",
@@ -119,6 +134,44 @@ const Dashboard = () => {
     }
   ];
 
+
+   const [countData, SetCountData] = useState({
+    total_members: 0,
+    total_branches: 0,
+  });
+  const [error, setError] = useState("");;
+
+   useEffect(() => {
+    const fetchcount = async () => {
+      try {
+        const response = await axios.get(
+          "http://api.fremikeconsult.com/api/count-dashboard",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+          }
+        );
+
+        if (response.data.status === "success") {
+          SetCountData({
+            total_members: response.data.members,
+            total_branches: response.data.branches,
+          });
+        } else {
+          setError(response.data.message);
+        }
+      } catch (error) {
+        setError("Error fetching members data. Please try again.");
+      }
+    };
+
+    fetchcount(); // Call the function on component mount
+  }, []); 
+
+
+
   return (
     <>
       <div className="app-container">
@@ -126,7 +179,7 @@ const Dashboard = () => {
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
               <i className="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
-              <a to="index.html" className="text-decoration-none">Home</a>
+              <Link to="/dashboard" className="text-decoration-none">Home</Link>
             </li>
             <li className="breadcrumb-item text-secondary" aria-current="page">
               Dashboard
@@ -144,7 +197,14 @@ const Dashboard = () => {
                   </div>
                   <div className="d-flex align-items-center justify-content-between">
                     <h5 className="m-0 text-secondary fw-normal">Members</h5>
-                    <h3 className="m-0 text-primary">3500</h3>
+                    {countData ? (
+                       
+                         <h3 className="m-0 text-primary">{countData.total_members}</h3>
+                      ) : (
+                        <p>No case data available.</p>
+                      )}
+
+                   
                   </div>
                 </div>
               </div>
@@ -172,7 +232,13 @@ const Dashboard = () => {
                   </div>
                   <div className="d-flex align-items-center justify-content-between">
                     <h5 className="m-0 text-secondary fw-normal">Branches</h5>
-                    <h3 className="m-0 text-primary">6500</h3>
+                    {countData ? (
+                       
+                         <h3 className="m-0 text-primary">{countData.total_branches}</h3>
+                      ) : (
+                        <p>No case data available.</p>
+                      )}
+
                   </div>
                 </div>
               </div>
@@ -470,6 +536,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+          <ToastContainer/>
         </div>
       </div>
     </>
@@ -480,6 +547,11 @@ export default Dashboard;
 
 
 export const Branch =()=>{
+
+  
+  const { token, handleLogout } = useAuthValidation();
+
+
 
  // Sparkline chart options and series
  const sparklineOptions = {
@@ -1196,6 +1268,11 @@ export const Branch =()=>{
 }
 
 export const User = () => {
+
+  
+  const { token, handleLogout } = useAuthValidation();
+
+
  // Sparkline chart options and series
  const sparklineOptions = {
    chart: {

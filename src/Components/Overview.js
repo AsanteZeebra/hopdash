@@ -1,5 +1,6 @@
 import React from "react";
 import Chart from "react-apexcharts";
+import { Link } from "react-router-dom";
 
 
 
@@ -43,9 +44,9 @@ const sparklineSeries = [
     }
   };
   const chartSeries = [
-    { name: "Visitors", data: [30, 55, 75, 80, 60] },
-    { name: "Sales", data: [0, 30, 35, 40, 50] },
-    { name: "Orders", data: [10, 20, 25, 30, 40] },
+    { name: "Adult", data: [30, 55, 75, 80, 60] },
+    { name: "Youth", data: [0, 30, 35, 40, 50] },
+    { name: "Children", data: [10, 20, 25, 30, 40] },
   ];
 
   // Spline area chart options and series
@@ -78,13 +79,18 @@ const areaChartOptions = {
 };
 const areaChartSeries = [
   {
-    name: "Tasks",
+    name: "Adult",
     data: [5, 8, 6, 10, 7, 12, 9],
     
   },
    {
-    name: "Tasks",
+    name: "Youth",
     data: [15, 44, 61, 65, 17, 50, 19],
+    
+  },
+  {
+    name: "Chidren",
+    data: [75, 44, 31, 58, 88, 20, 12],
     
   }
 ];
@@ -163,7 +169,7 @@ const stackedAreaChartSeries = [
                             <div className="col-xl-7 col-12">
                                 <div className="card mb-3">
                                     <div className="card-header">
-                                        <h5 className="card-title">Statistics</h5>
+                                        <h5 className="card-title">Members Statistics</h5>
                                     </div>
                                     <div className="card-body">
                                         <Chart
@@ -194,19 +200,19 @@ const stackedAreaChartSeries = [
                                             <div className="col-sm-4 col-4 v-curve-seperator">
                                                 <div className="border p-2 rounded-2 text-center">
                                                     <h3 className="m-0 text-primary">900</h3>
-                                                    <p className="m-0">Likes</p>
+                                                    <p className="m-0">Adult</p>
                                                 </div>
                                             </div>
                                             <div className="col-sm-4 col-4 v-curve-seperator">
                                                 <div className="border p-2 rounded-2 text-center">
                                                     <h3 className="m-0 text-primary">600</h3>
-                                                    <p className="m-0">Shares</p>
+                                                    <p className="m-0">Youth</p>
                                                 </div>
                                             </div>
                                             <div className="col-sm-4 col-4 ">
                                                 <div className="border p-2 rounded-2 text-center">
                                                     <h3 className="m-0 text-primary">400</h3>
-                                                    <p className="m-0">Clicks</p>
+                                                    <p className="m-0">Children</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -227,7 +233,7 @@ const stackedAreaChartSeries = [
                                                 </div>
                                                 <div className="mx-3">
                                                     <h3 className="m-0">1800</h3>
-                                                    <p className="m-0 text-secondary">Likes</p>
+                                                    <p className="m-0 text-secondary">General</p>
                                                 </div>
                                             </div>
                                             {/* Sparkline chart rendered here (line 184) */}
@@ -254,7 +260,7 @@ const stackedAreaChartSeries = [
                                                 </div>
                                                 <div className="mx-3">
                                                     <h3 className="m-0">4500</h3>
-                                                    <p className="m-0 text-secondary">Views</p>
+                                                    <p className="m-0 text-secondary">Men</p>
                                                 </div>
                                             </div>
                                             <div id="sparklineLine2" className="ms-auto"></div>
@@ -272,7 +278,7 @@ const stackedAreaChartSeries = [
                                                 </div>
                                                 <div className="mx-3">
                                                     <h3 className="m-0">3200</h3>
-                                                    <p className="m-0 text-secondary">Users</p>
+                                                    <p className="m-0 text-secondary">Women</p>
                                                 </div>
                                             </div>
                                             <div id="sparklineLine3" className="ms-auto"></div>
@@ -290,7 +296,7 @@ const stackedAreaChartSeries = [
                                                 </div>
                                                 <div className="mx-3">
                                                     <h3 className="m-0">9700</h3>
-                                                    <p className="m-0 text-secondary">Sales</p>
+                                                    <p className="m-0 text-secondary">Youth</p>
                                                 </div>
                                             </div>
                                             <div id="sparklineLine4" className="ms-auto"></div>
@@ -300,25 +306,7 @@ const stackedAreaChartSeries = [
                             </div>
                         </div>
                         
-                        <div className="row gx-3">
-                            <div className="col-xl-12">
-                                <div className="card mb-3">
-                                    <div className="card-header">
-                                        <h5 className="card-title">Visitors</h5>
-                                    </div>
-                                    <div className="card-body">
-                                        <Chart
-                                                             options={stackedAreaChartOptions}
-                                                             series={stackedAreaChartSeries}
-                                                             type="area"
-                                                             width="100%"
-                                                             height={200}
-                                                           />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-xl-4 col-12"></div>
-                        </div>
+                    
                         
                       
                         <div className="row gx-3">
@@ -389,7 +377,7 @@ const stackedAreaChartSeries = [
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-xl-4 col-sm-6 col-12">
+                            <div className="col-xl-8 col-sm-6 col-12">
                                 <div className="card mb-3">
                                     <div className="card-header">
                                         <h5 className="card-title">Events</h5>
@@ -462,61 +450,23 @@ const stackedAreaChartSeries = [
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-xl-4 col-sm-6 col-md-12">
-                                <div className="card mb-3">
-                                    <div className="card-header">
-                                        <h5 className="card-title">Head Pastor</h5>
-                                    </div>
-                                    <div className="card-body">
-                                        <div className="scroll300">
-                                            <div className="my-2">
-                                                <div className="d-flex position-relative activity-block">
-                                                    <img src="assets/images/user1.png" className="img-5x me-3 rounded-circle activity-user"
-                                                        alt="Admin Dashboard" />
-                                                    <div className="mb-5">
-                                                        <h6 className="fw-semibold">Rev. Prince Atta Poku</h6>
-                                                        <p className="text-secondary mb-1">Since 2023</p>
-                                                        <p>Service ID: 26788</p>
-                                                        <span className="bg-warning bg-opacity-10 p-2">Tema Branch - Present</span>
-                                                    </div>
-                                                </div>
-
-                                                <div className="d-flex position-relative activity-block">
-                                                    <img src="assets/images/user1.png" className="img-5x me-3 rounded-circle activity-user"
-                                                        alt="Admin Dashboard" />
-                                                    <div className="mb-5">
-                                                        <h6 className="fw-semibold">Sofo Maame</h6>
-                                                        <p className="text-secondary mb-1">Since 2023</p>
-                                                        <p>Service ID: 26788</p>
-                                                        
-                                                        <span className="bg-warning bg-opacity-10 p-2">Tema Branch - Present</span>
-                                                    </div>
-                                                </div>
-                                                
-                                                
-                                              
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
                         
                         <div className="row gx-3">
                             <div className="col-xxl-6 col-sm-12 col-12">
                                 <div className="card mb-3">
                                     <div className="card-header">
-                                        <h5 className="card-title">Page Views</h5>
+                                        <h5 className="card-title">MIni Harvest</h5>
                                     </div>
                                     <div className="card-body">
                                         <div className="table-responsive">
                                             <table className="table align-middle">
                                                 <thead>
                                                     <tr>
-                                                        <th>Link</th>
-                                                        <th>Page Title</th>
-                                                        <th>Visitors</th>
+                                                        <th>ID</th>
+                                                        <th>Branch</th>
+                                                        <th>Popuation</th>
                                                         <th>Percentage</th>
                                                         <th>Growth</th>
                                                     </tr>
@@ -530,12 +480,7 @@ const stackedAreaChartSeries = [
                                                         </td>
                                                         <td>Home</td>
                                                         <td>56,000</td>
-                                                        <td>
-                                                            <div className="progress lg progress-spacer">
-                                                                <div className="progress-bar bg-primary" role="progressbar" style={{width: "50%"}}
-                                                                    aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </td>
+                                                        <td>25%</td>
                                                         <td>
                                                             <p className="m-0 text-info">8% high</p>
                                                         </td>
@@ -548,12 +493,7 @@ const stackedAreaChartSeries = [
                                                         </td>
                                                         <td>About</td>
                                                         <td>35,000</td>
-                                                        <td>
-                                                            <div className="progress lg progress-spacer">
-                                                                <div className="progress-bar bg-success" role="progressbar" style={{width: "60%"}}
-                                                                    aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </td>
+                                                        <td>23%</td>
                                                         <td>
                                                             <p className="m-0 text-success">12% low</p>
                                                         </td>
@@ -566,12 +506,7 @@ const stackedAreaChartSeries = [
                                                         </td>
                                                         <td>Contact</td>
                                                         <td>28,000</td>
-                                                        <td>
-                                                            <div className="progress lg progress-spacer">
-                                                                <div className="progress-bar bg-warning" role="progressbar" style={{width: "70%"}}
-                                                                    aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </td>
+                                                        <td>18%</td>
                                                         <td>
                                                             <p className="m-0 text-warning">15% high</p>
                                                         </td>
@@ -584,14 +519,9 @@ const stackedAreaChartSeries = [
                                                         </td>
                                                         <td>Services</td>
                                                         <td>33,000</td>
+                                                        <td>12%</td>
                                                         <td>
-                                                            <div className="progress lg progress-spacer">
-                                                                <div className="progress-bar bg-danger" role="progressbar" style={{width: "80%"}}
-                                                                    aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <p className="m-0 text-danger">9% high</p>
+                                                            <p className="m-0 text-success">9% high</p>
                                                         </td>
                                                     </tr>
                                                     <tr className="grd-primary-light">
@@ -602,12 +532,7 @@ const stackedAreaChartSeries = [
                                                         </td>
                                                         <td>Products</td>
                                                         <td>98,000</td>
-                                                        <td>
-                                                            <div className="progress lg progress-spacer">
-                                                                <div className="progress-bar bg-primary" role="progressbar" style={{width: "90%"}}
-                                                                    aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </td>
+                                                        <td>16%</td>
                                                         <td>
                                                             <p className="m-0 text-primary">3% low</p>
                                                         </td>
@@ -621,16 +546,16 @@ const stackedAreaChartSeries = [
                             <div className="col-xxl-6 col-sm-12 col-12">
                                 <div className="card mb-3">
                                     <div className="card-header">
-                                        <h5 className="card-title">Clicks</h5>
+                                        <h5 className="card-title">MIni Harvest</h5>
                                     </div>
                                     <div className="card-body">
                                         <div className="table-responsive">
                                             <table className="table align-middle">
                                                 <thead>
                                                     <tr>
-                                                        <th>Link</th>
-                                                        <th>Page Title</th>
-                                                        <th>Visitors</th>
+                                                        <th>ID</th>
+                                                        <th>Branch</th>
+                                                        <th>Popuation</th>
                                                         <th>Percentage</th>
                                                         <th>Growth</th>
                                                     </tr>

@@ -44,50 +44,48 @@ const Sidebar = () => {
                         </li>
 
                         {/* Branches */}
-                        <li className={`treeview${isTreeActive(["/accordions.html", "/alerts.html", "/buttons.html"]) ? " active current-page" : ""}${openMenus["branches"] ? " open" : ""}`}>
-                            <a href="#branches" onClick={e => { e.preventDefault(); handleTreeToggle("branches"); }}>
+                        <li className={`treeview${isTreeActive(["/view-branch", "/add-branch", "/branch-activity"]) ? " active current-page" : ""}${openMenus["/view-branch"] ? " open" : ""}`}>
+                            <Link to="/view-branch" onClick={e => { e.preventDefault(); handleTreeToggle("/view-branch"); }}>
                                 <i className="bi bi-stickies"></i>
                                 <span className="menu-text">Branches</span>
                                 {/* Removed duplicate chevron */}
-                            </a>
-                            <ul className="treeview-menu" style={{ display: openMenus["branches"] ? "block" : "none" }}>
+                            </Link>
+                            <ul className="treeview-menu" style={{ display: openMenus["/view-branch"] ? "block" : "none" }}>
                                 <li>
-                                    <Link to="/accordions.html">All branches</Link>
+                                    <Link to="/view-branch">All branches</Link>
                                 </li>
                                 <li>
-                                    <Link to="/alerts.html">Add New Branch</Link>
+                                    <Link to="/add-branch">Add New Branch</Link>
                                 </li>
                                 <li>
-                                    <Link to="/buttons.html">View Branch Activities</Link>
+                                    <Link to="/branch-activity">View Branch Activities</Link>
                                 </li>
                             </ul>
                         </li>
 
                         {/* Pastors */}
                         <li className={`treeview${isTreeActive([
-                            "/form-inputs.html",
-                            "/form-checkbox-radio.html",
+                            "/view-pastors",
+                            "/add-pastors",
                             "/form-file-input.html",
                             "/form-validations.html"
                         ]) ? " active current-page" : ""}${openMenus["pastors"] ? " open" : ""}`}>
-                            <a href="#pastors" onClick={e => { e.preventDefault(); handleTreeToggle("pastors"); }}>
-                                <i className="bi bi-ui-checks-grid"></i>
+                            <Link to="/view-pastors" onClick={e => { e.preventDefault(); handleTreeToggle("pastors"); }}>
+                                <i className="bi bi-person-video"></i>
                                 <span className="menu-text">Pastors</span>
                                 {/* Removed duplicate chevron */}
-                            </a>
+                            </Link>
                             <ul className="treeview-menu" style={{ display: openMenus["pastors"] ? "block" : "none" }}>
                                 <li>
-                                    <Link to="/form-inputs.html">All Pastors</Link>
+                                    <Link to="/view-pastors">All Pastors</Link>
                                 </li>
                                 <li>
-                                    <Link to="/form-checkbox-radio.html">Add Pastor &amp; Radio</Link>
+                                    <Link to="/add-pastors">Add New Pastor</Link>
                                 </li>
                                 <li>
-                                    <Link to="/form-file-input.html">Transfer Pastor</Link>
+                                    <Link to="/transfer">Transfer Pastor</Link>
                                 </li>
-                                <li>
-                                    <Link to="/form-validations.html">Remove/Suspend</Link>
-                                </li>
+                               
                             </ul>
                         </li>
 
@@ -97,13 +95,13 @@ const Sidebar = () => {
                             "/view-invoice.html"
                         ]) ? " active current-page" : ""}${openMenus["members"] ? " open" : ""}`}>
                             <a href="#members" onClick={e => { e.preventDefault(); handleTreeToggle("members"); }}>
-                                <i className="bi bi-window-sidebar"></i>
+                                <i className="bi bi-people"></i>
                                 <span className="menu-text">Members</span>
                                 {/* Removed duplicate chevron */}
                             </a>
                             <ul className="treeview-menu" style={{ display: openMenus["members"] ? "block" : "none" }}>
                                 <li>
-                                    <Link to="/create-invoice.html">View All</Link>
+                                    <Link to="/create-invoice.html">Statistics</Link>
                                 </li>
                                 <li>
                                     <Link to="/view-invoice.html">Add Member</Link>
@@ -245,13 +243,13 @@ export const Branch_Sidebar = () => {
         <>
             <nav id="sidebar" className="sidebar-wrapper">
                 <div className="shop-profile">
-                    <p className="mb-1 fw-bold text-primary">Walmart</p>
-                    <p className="m-0">Los Angeles, California</p>
+                    <p className="mb-1 fw-bold text-primary">Admin</p>
+                    <p className="m-0">Tema Branch</p>
                 </div>
                 <div className="sidebarMenuScroll">
                     <ul className="sidebar-menu">
-                        <li className={isActive("/dashboard") ? "active current-page" : ""}>
-                            <Link to="/dashboard">
+                        <li className={isActive("/branch") ? "active current-page" : ""}>
+                            <Link to="/branch">
                                 <i className="bi bi-pie-chart"></i>
                                 <span className="menu-text">Dashboard</span>
                             </Link>
@@ -467,74 +465,29 @@ export const User_Sidebar = () => {
         <>
             <nav id="sidebar" className="sidebar-wrapper">
                 <div className="shop-profile">
-                    <p className="mb-1 fw-bold text-primary">Walmart</p>
-                    <p className="m-0">Los Angeles, California</p>
+                    <p className="mb-1 fw-bold text-primary">Executive</p>
+                    <p className="m-0">General Welfare</p>
                 </div>
                 <div className="sidebarMenuScroll">
                     <ul className="sidebar-menu">
                        
-                        <li className={isActive("/overview") ? "active current-page" : ""}>
-                            <Link to="/overview">
+                        <li className={isActive("/user") ? "active current-page" : ""}>
+                            <Link to="/user">
                                 <i className="bi bi-bar-chart-line"></i>
-                                <span className="menu-text">Overview</span>
+                                <span className="menu-text">Dashbaord</span>
                             </Link>
                         </li>
 
-                        {/* Branches */}
-                        <li className={`treeview${isTreeActive(["/accordions.html", "/alerts.html", "/buttons.html"]) ? " active current-page" : ""}${openMenus["branches"] ? " open" : ""}`}>
-                            <a href="#branches" onClick={e => { e.preventDefault(); handleTreeToggle("branches"); }}>
-                                <i className="bi bi-stickies"></i>
-                                <span className="menu-text">Members</span>
-                                {/* Removed duplicate chevron */}
-                            </a>
-                            <ul className="treeview-menu" style={{ display: openMenus["branches"] ? "block" : "none" }}>
-                                <li>
-                                    <Link to="/accordions.html">All Members</Link>
-                                </li>
-                                <li>
-                                    <Link to="/alerts.html">Add Members</Link>
-                                </li>
-                                <li>
-                                    <Link to="/buttons.html">Members Profile</Link>
-                                </li>
-                            </ul>
-                        </li>
+                      
 
-                        {/* Pastors */}
-                        <li className={`treeview${isTreeActive([
-                            "/form-inputs.html",
-                            "/form-checkbox-radio.html",
-                            "/form-file-input.html",
-                            "/form-validations.html"
-                        ]) ? " active current-page" : ""}${openMenus["pastors"] ? " open" : ""}`}>
-                            <a href="#pastors" onClick={e => { e.preventDefault(); handleTreeToggle("pastors"); }}>
-                                <i className="bi bi-ui-checks-grid"></i>
-                                <span className="menu-text">Attendance</span>
-                                {/* Removed duplicate chevron */}
-                            </a>
-                            <ul className="treeview-menu" style={{ display: openMenus["pastors"] ? "block" : "none" }}>
-                                <li>
-                                    <Link to="/form-inputs.html">Mark Attendance</Link>
-                                </li>
-                                <li>
-                                    <Link to="/form-checkbox-radio.html">View Attendance</Link>
-                                </li>
-                                <li>
-                                    <Link to="/form-file-input.html">Attendance Report</Link>
-                                </li>
-                                <li>
-                                    <Link to="/form-validations.html">Remove/Suspend</Link>
-                                </li>
-                            </ul>
-                        </li>
-
+                     
                         {/* Members */}
                         <li className={`treeview${isTreeActive([
                             "/create-invoice.html",
                             "/view-invoice.html"
                         ]) ? " active current-page" : ""}${openMenus["members"] ? " open" : ""}`}>
                             <a href="#members" onClick={e => { e.preventDefault(); handleTreeToggle("members"); }}>
-                                <i className="bi bi-window-sidebar"></i>
+                                <i className="bi bi-wallet"></i>
                                 <span className="menu-text">Dues & Payments</span>
                                 {/* Removed duplicate chevron */}
                             </a>
@@ -560,7 +513,7 @@ export const User_Sidebar = () => {
                             "/attendance-branch"
                         ]) ? " active current-page" : ""}${openMenus["attendance"] ? " open" : ""}`}>
                             <a href="#attendance" onClick={e => { e.preventDefault(); handleTreeToggle("attendance"); }}>
-                                <i className="bi bi-window-sidebar"></i>
+                                <i className="bi bi-calendar2-event"></i>
                                 <span className="menu-text">Events</span>
                                 {/* Removed duplicate chevron */}
                             </a>
@@ -585,7 +538,7 @@ export const User_Sidebar = () => {
                             "/events-branch"
                         ]) ? " active current-page" : ""}${openMenus["events"] ? " open" : ""}`}>
                             <a href="#events" onClick={e => { e.preventDefault(); handleTreeToggle("events"); }}>
-                                <i className="bi bi-window-sidebar"></i>
+                                <i className="bi bi-list-columns"></i>
                                 <span className="menu-text">Reports</span>
                                 {/* Removed duplicate chevron */}
                             </a>
@@ -603,33 +556,11 @@ export const User_Sidebar = () => {
                             </ul>
                         </li>
 
-                        {/* Reports */}
-                        <li className={`treeview${isTreeActive([
-                            "/reports-branch",
-                            "/reports-attendance",
-                            "/reports-payments"
-                        ]) ? " active current-page" : ""}${openMenus["reports"] ? " open" : ""}`}>
-                            <a href="#reports" onClick={e => { e.preventDefault(); handleTreeToggle("reports"); }}>
-                                <i className="bi bi-window-sidebar"></i>
-                                <span className="menu-text">Settings</span>
-                                {/* Removed duplicate chevron */}
-                            </a>
-                            <ul className="treeview-menu" style={{ display: openMenus["reports"] ? "block" : "none" }}>
-                                <li>
-                                    <Link to="/reports-branch">Profile Settings</Link>
-                                </li>
-                                <li>
-                                    <Link to="/reports-attendance">Notification Settings</Link>
-                                </li>
-                                <li>
-                                    <Link to="/reports-payments">System Configuration</Link>
-                                </li>
-                            </ul>
-                        </li>
+                      
 
-                       <li className={isActive("/overview") ? "active current-page" : ""}>
-                            <Link to="/overview">
-                                <i className="bi bi-shut-down"></i>
+                       <li className={isActive("/") ? "active current-page" : ""}>
+                            <Link to="/">
+                                <i className="bi bi-power"></i>
                                 <span className="menu-text">Logout</span>
                             </Link>
                         </li>

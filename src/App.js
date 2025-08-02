@@ -1,7 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React from "react";
-
+import { BrowserRouter, Routes, Route,Navigate } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import { Branch_Layout,User_layout } from "./Layout/Layout";
 import { Branch } from "./Dashbaord";
@@ -12,6 +10,13 @@ import Signup from "./Components/authentication/signup";
  import Login from "./Components/authentication/login"; 
 import RequestReset from "./Components/authentication/request_reset";
 import ResetPassword from "./Components/authentication/Reset_Password";
+import ProtectedRoute from "./Components/authentication/protect_route";
+import AddBranch from "./Components/Branches/Add_Branch";
+import { ViewBranch,BranchActivity,EditBranch } from "./Components/Branches/Add_Branch";
+import { AddPastor,EditPastor,PastorProfile,Transfer } from "./Components/Pastors/Pastors";
+import ViewPastors from "./Components/Pastors/Pastors";
+
+
 
 
 function App() {
@@ -27,9 +32,22 @@ function App() {
         <Route path="/user" element={<User_layout><User/></User_layout>} />
         <Route path="/branch" element={<Branch_Layout><Branch/></Branch_Layout>}/>
         <Route path="/dashboard" element={<Layout><Dashboard/></Layout>} />
+        <Route path="/add-branch" element={<Layout><AddBranch/></Layout>} />
+        <Route path="/view-branch" element={<Layout><ViewBranch/></Layout>} />
+        <Route path="/branch-activity" element={<Layout><BranchActivity/></Layout>} />
+        <Route path="/view-pastors" element={<Layout><ViewPastors/></Layout>} />
+        <Route path="/add-pastors" element={<Layout><AddPastor/></Layout>} />
+        <Route path="/edit-branch" element={<Layout><EditBranch/></Layout>} />
+         <Route path="/edit-pastor" element={<Layout><EditPastor/></Layout>} />
+        <Route path="/pastor-profile" element={<Layout><PastorProfile/></Layout>} />
+        <Route path="/transfer" element={<Layout><Transfer/></Layout>} />
+
+
+        
+        {/* Protected Routes */}
         
         
-        <Route path="*" element={<h1>Page Not Found</h1>} />
+       <Route path="*" element={<Navigate to="/login" replace />} />
        
       </Routes>
     </BrowserRouter>

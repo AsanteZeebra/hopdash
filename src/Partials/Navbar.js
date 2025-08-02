@@ -1,7 +1,13 @@
 
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import logout from "../Components/authentication/logout";
 
 const Navbar = () => {
+	 const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout(navigate);
+  };
     return(
         <>
         <div className="app-header d-flex align-items-center">
@@ -101,7 +107,7 @@ const Navbar = () => {
 									</div>
 								</div>
 								<div className="d-grid mx-3 my-1">
-									<a href="javascript:void(0)" className="btn btn-primary">View all</a>
+									<Link to="/" className="btn btn-primary">View all</Link>
 								</div>
 							</div>
 						</div>
@@ -156,7 +162,7 @@ const Navbar = () => {
 									</div>
 								</div>
 								<div className="d-grid mx-3 my-1">
-									<a href="javascript:void(0)" className="btn btn-primary">View all</a>
+									<Link to="/" className="btn btn-primary">View all</Link>
 								</div>
 							</div>
 						</div>
@@ -205,7 +211,7 @@ const Navbar = () => {
 									</div>
 								</div>
 								<div className="d-grid mx-3 my-1">
-									<a href="javascript:void(0)" className="btn btn-primary">View all</a>
+									<Link to="/" className="btn btn-primary">View all</Link>
 								</div>
 							</div>
 						</div>
@@ -223,7 +229,7 @@ const Navbar = () => {
 								<a className="dropdown-item" href="widgets.html"><i className="bi bi-box text-success"></i>Widgets</a>
 							</div>
 							<div className="mx-3 mt-2 d-grid">
-								<a href="login.html" className="btn btn-primary btn-sm">Logout</a>
+								<Link onClick={handleLogout} className="btn btn-primary btn-sm">Logout</Link>
 							</div>
 						</div>
 					</div>
@@ -236,6 +242,11 @@ const Navbar = () => {
 }
 
 export const Branch_Navbar = () => {
+	 const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout(navigate);
+  };
     return(
         <>
         <div className="app-header d-flex align-items-center">
@@ -251,10 +262,10 @@ export const Branch_Navbar = () => {
 				</div>
 				
 				<div className="app-brand py-2 ms-3">
-					<Link to="/dashbaord" className="d-sm-block d-none">
+					<Link to="/branch" className="d-sm-block d-none">
 						<img src="assets/images/logo.svg" className="logo" alt="Bootstrap Gallery" />
 					</Link>
-					<Link to="/dashbaord" className="d-sm-none d-block">
+					<Link to="/branch" className="d-sm-none d-block">
 						<img src="assets/images/logo-sm.svg" className="logo" alt="Bootstrap Gallery" />
 					</Link>
 				</div>
@@ -394,7 +405,7 @@ export const Branch_Navbar = () => {
 								<a className="dropdown-item" href="widgets.html"><i className="bi bi-box text-success"></i>Widgets</a>
 							</div>
 							<div className="mx-3 mt-2 d-grid">
-								<a href="login.html" className="btn btn-primary btn-sm">Logout</a>
+								<Link onClick={handleLogout} className="btn btn-primary btn-sm">Logout</Link>
 							</div>
 						</div>
 					</div>
@@ -406,7 +417,14 @@ export const Branch_Navbar = () => {
     )
 }
 
+
+
 export const User_Navbar = () => {
+	 const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout(navigate);
+  };
     return(
         <>
         <div className="app-header d-flex align-items-center">
@@ -551,7 +569,7 @@ export const User_Navbar = () => {
 								<a className="dropdown-item" href="widgets.html"><i className="bi bi-box text-success"></i>Widgets</a>
 							</div>
 							<div className="mx-3 mt-2 d-grid">
-								<a href="login.html" className="btn btn-primary btn-sm">Logout</a>
+								<Link onClick={handleLogout} className="btn btn-primary btn-sm">Logout</Link>
 							</div>
 						</div>
 					</div>

@@ -25,7 +25,7 @@ const navigate = useNavigate();
   setLoading(true);
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/api/reset-password",
+      "http://api.fremikecnsult.com/api/reset-password",
       { 
         email: data.email, 
         password: data.password,
