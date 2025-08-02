@@ -35,7 +35,7 @@ const useAuthValidation = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:8000/api/user", {
+        const response = await axios.get("http://api.fremikeconsult.com/api/user", {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,

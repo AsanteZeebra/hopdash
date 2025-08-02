@@ -22,7 +22,7 @@ const Signup = () => {
   setLoading(true);
   try {
     const response = await axios.post(
-      "http://api.fremikecnsult.com/api/register",
+      "http://api.fremikeconsult.com/api/register",
       {
         name: data.fullname,
         email: data.email,

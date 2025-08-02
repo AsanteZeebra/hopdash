@@ -59,7 +59,7 @@ const onSubmit = async (data) => {
   setLoading(true);
   try {
     const response = await axios.post(
-      "http://api.fremikecnsult.com/api/add-branch",
+      "http://api.fremikeconsult.com/api/add-branch",
       {
         branch_name: data.branchName,
         region: data.region,
@@ -319,7 +319,7 @@ export const ViewBranch = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://api.fremikecnsult.com/api/view-branches", {
+      .get("http://api.fremikeconsult.com/api/view-branches", {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -387,7 +387,7 @@ export const ViewBranch = () => {
     if (!branchToDelete) return;
 
     axios
-      .delete(`http://api.fremikecnsult.com/api/delete-branch/${branchToDelete.branch_id}`, {
+      .delete(`http://api.fremikeconsult.com/api/delete-branch/${branchToDelete.branch_id}`, {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -640,7 +640,7 @@ if (
       if (!branchId) return;
 
       try {
-        const response = await axios.get(`http://api.fremikecnsult.com/api/fetch-branch/${branchId}`, {
+        const response = await axios.get(`http://api.fremikeconsult.com/api/fetch-branch/${branchId}`, {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
@@ -684,7 +684,7 @@ if (
       const branchId = localStorage.getItem("branch_id");
 
       const response = await axios.put(
-        `http://api.fremikecnsult.com/api/update-branch/${branchId}`,
+        `http://api.fremikeconsult.com/api/update-branch/${branchId}`,
         {
           branch_name: data.branchName,
           region: data.region.value,

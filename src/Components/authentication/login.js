@@ -25,7 +25,7 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://api.fremikecnsult.com/api/login", // Laravel API endpoint
+        "http://api.fremikeconsult.com/api/login", // Laravel API endpoint
         { email: data.email, password: data.password },
 
         {

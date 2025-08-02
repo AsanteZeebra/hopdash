@@ -1114,7 +1114,7 @@ export const PastorProfile = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/upload-pastor-photo/${pastorCode}`,
+        `http://api.fremikeconsult.com/api/upload-pastor-photo/${pastorCode}`,
         formData,
         {
           headers: {
@@ -1147,7 +1147,7 @@ export const PastorProfile = () => {
                   <img
                     src={
                       pastorData?.photo
-                        ? `http://localhost:8000/storage/${pastorData.photo}`
+                        ? `http://api.fremikeconsult.com/storage/${pastorData.photo}`
                         : `https://ui-avatars.com/api/?name=${encodeURIComponent(
                             pastorData?.fullname || "Pastor"
                           )}&background=0d6efd&color=fff`
