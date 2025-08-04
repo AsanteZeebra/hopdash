@@ -1625,6 +1625,7 @@ export const Transfer = () => {
 
 export const MakeTransfer = () => {
   const { token, handleLogout } = useAuthValidation();
+  const [branchData, setBranchData] = useState([]);
 
   const {
     register,
@@ -1741,6 +1742,34 @@ export const MakeTransfer = () => {
     }
   };
 
+  const fetchBranches = async () => {
+    try {
+      const response = await axios.get(
+        "http://api.fremikeconsult.com/api/view-branches",
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.data.status === "success") {
+        setBranchData(response.data.data);
+      } else {
+        toast.success(response.data.data, {
+          position: "top-right",
+        });
+      }
+    } catch (error) {
+      toast.error(error, {
+        position: "top-right",
+      });
+    }
+  };
+
+  fetchBranches();
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="col-xxl-12">
@@ -1803,6 +1832,33 @@ export const MakeTransfer = () => {
                   )}
                 </div>
               </div>
+               
+                 <div className="col-lg-6 col-sm-4 col-12">
+                <div className="mb-3">
+                  <label className="form-label">Branch</label>
+                  <select
+                    className="form-select"
+                    {...register("branch", { required: true })}
+                  >
+                    <option value="">-Select-</option>
+                    {branchData && branchData.length > 0 ? (
+                      branchData.map((branch, index) => (
+                        <option key={index} value={branch.branch_name}>
+                          {branch.branch_name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="" disabled>
+                        No Branch found
+                      </option>
+                    )}
+                  </select>
+                  {errors.branch && (
+                    <small className="text-danger">Please Choose Branch</small>
+                  )}
+                </div>
+              </div>
+
 
               <div className="col-lg-6 col-sm-4 col-12">
                 <div className="mb-3">
