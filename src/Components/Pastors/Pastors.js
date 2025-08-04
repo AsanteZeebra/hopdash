@@ -1623,4 +1623,275 @@ export const Transfer = () => {
   );
 };
 
+export const MakeTransfer = () => {
+  const { token, handleLogout } = useAuthValidation();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchPastorDetails = async () => {
+      const pastor_code = localStorage.getItem("pastor_code");
+      if (!pastor_code) return;
+
+      try {
+        const response = await axios.get(
+          `http://api.fremikeconsult.com/api/fetch-pastor/${pastor_code}`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.status === "success") {
+          const data = response.data.data;
+
+          reset({
+            fullname: data.fullname,
+            title: data.title,
+            dob: data.dob,
+            marital_status: data.marital_status,
+            spouse: data.spouse,
+            children: data.children,
+            telephone: data.telephone,
+            from_date: data.from_date,
+            to_date: data.to_date,
+            next_of_kin: data.next_of_kin,
+            emergency_contact: data.emergency_contact,
+            status: data.status || "active",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to fetch Pastor info:", error);
+        toast.error("Failed to load Pastor info", { position: "top-right" });
+      }
+    };
+
+    fetchPastorDetails();
+  }, [token, reset, setValue]);
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      const pastor_code = localStorage.getItem("pastor_code");
+
+      const response = await axios.patch(
+        `http://api.fremikeconsult.com/api/update-pastor/${pastor_code}`,
+        {
+          fullname: data.fullname,
+          title: data.title,
+          dob: data.dob,
+          marital_status: data.marital_status,
+          spouse: data.spouse,
+          children: data.children,
+          telephone: data.telephone,
+          from_date: data.from_date,
+          to_date: data.to_date,
+          next_of_kin: data.next_of_kin,
+          emergency_contact: data.emergency_contact,
+          status: data.status || "active",
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success("Pastor info updated successfully!", {
+          position: "top-right",
+        });
+        localStorage.removeItem("pastor_code");
+
+        setTimeout(() => {
+          navigate("/view-pastors");
+        }, 2000); // 3000ms = 3 seconds
+      }
+    } catch (error) {
+      setLoading(false);
+      if (error.response && error.response.status === 422) {
+        const errors = error.response.data.errors;
+        Object.values(errors).forEach((messages) => {
+          toast.error(messages[0], { position: "top-right" });
+        });
+      } else {
+        toast.error(
+          "An unexpected error occurred!",
+          { position: "top-right" },
+          error
+        );
+        console.error("Error updating Pastor Info:", error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="col-xxl-12">
+        <div className="card mb-3">
+          <div className="card-header">
+            <h5 className="card-title">Transfer Pastor</h5>
+          </div>
+
+          <div className="card-body">
+            <div className="row gx-3">
+              <div className="col-lg-6 col-sm-4 col-12">
+                <div className="mb-3">
+                  <label className="form-label">FullName:</label>
+                  <input
+                    type="text"
+                    {...register("fullname", { required: true })}
+                    className="form-control"
+                    placeholder="Enter FullName"
+                  />
+                  {errors.FullName && (
+                    <small className="text-danger">
+                      Branch Name is required
+                    </small>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-lg-6 col-sm-4 col-12">
+                <div className="mb-3">
+                  <label className="form-label">Tittle</label>
+                  <select
+                    className="form-select"
+                    {...register("title", { required: true })}
+                  >
+                    <option value="">-Select-</option>
+                    <option value="Rev.">Reverened</option>
+                    <option value="Apostle">Apostle</option>
+                    <option value="Evangelist">Evangelist</option>
+                    <option value="Pastor">Pastor</option>
+                  </select>
+                  {errors.Tittle && (
+                    <small className="text-danger">Tittle is required</small>
+                  )}
+                </div>
+              </div>
+
+             
+
+              <div className="col-lg-6 col-sm-4 col-12">
+                <div className="mb-3">
+                  <label className="form-label">Telephone</label>
+                  <input
+                   disabled type="text"
+                    {...register("telephone", { required: true })}
+                    className="form-control"
+                    placeholder="Enter Telephone"
+                  />
+                  {errors.Telephone && (
+                    <small className="text-danger">Telephone is required</small>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-lg-6 col-sm-4 col-12">
+                <div className="mb-3">
+                  <label className="form-label">From</label>
+                  <input
+                    type="date"
+                    {...register("from_date", { required: true })}
+                    className="form-control"
+                    placeholder="From Date is required"
+                  />
+                  {errors.from_date && (
+                    <small className="text-danger">From Date is required</small>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-lg-6 col-sm-4 col-12">
+                <div className="mb-3">
+                  <label className="form-label">To</label>
+                  <input
+                    type="date"
+                    {...register("to_date", { required: true })}
+                    className="form-control"
+                    placeholder="Enter To Date"
+                  />
+                  {errors.to_date && (
+                    <small className="text-danger">To Date is required</small>
+                  )}
+                </div>
+              </div>
+
+             
+
+          
+
+              <div className="col-lg-6 col-sm-4 col-12">
+                <div className="mb-3">
+                  <label className="form-label">Status</label>
+                  <select
+                    className="form-select"
+                    {...register("status", { required: true })}
+                  >
+                    <option value="">-Select-</option>
+                    <option value="active">Active</option>
+                    <option value="transferred">Transferred</option>
+                    <option value="suspended">Suspended</option>
+                    <option value="sacked">Sacked</option>
+                    <option value="retired">Retired</option>
+                    <option value="blocked">Blocked</option>
+                  </select>
+                  {errors.status && (
+                    <small className="text-danger">Status is required</small>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-footer">
+            <div className="d-flex gap-2 justify-content-end">
+              <Link
+                to={"/view-pastors"}
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={() => localStorage.removeItem("pastor_code")}
+              >
+                Cancel
+              </Link>
+              <button
+                type="submit"
+                className="btn btn-success"
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="d-flex align-items-center justify-content-center">
+                    <ClipLoader color="#fff" size={20} />
+                    <span className="ms-2">loading...</span>
+                  </span>
+                ) : (
+                  "Submit"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ToastContainer />
+    </form>
+  );
+};
+
 
