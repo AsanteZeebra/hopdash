@@ -13,7 +13,7 @@ import ResetPassword from "./Components/authentication/Reset_Password";
 import ProtectedRoute from "./Components/authentication/protect_route";
 import AddBranch from "./Components/Branches/Add_Branch";
 import { ViewBranch,BranchActivity,EditBranch } from "./Components/Branches/Add_Branch";
-import { AddPastor,EditPastor,PastorProfile,Transfer } from "./Components/Pastors/Pastors";
+import { AddPastor,EditPastor,PastorProfile,Transfer,MakeTransfer } from "./Components/Pastors/Pastors";
 import ViewPastors from "./Components/Pastors/Pastors";
 
 
@@ -41,6 +41,7 @@ function App() {
          <Route path="/edit-pastor" element={<Layout><EditPastor/></Layout>} />
         <Route path="/pastor-profile" element={<Layout><PastorProfile/></Layout>} />
         <Route path="/transfer" element={<Layout><Transfer/></Layout>} />
+        <Route path="/make-transfer" element={<Layout><MakeTransfer/></Layout>} />
 
 
         

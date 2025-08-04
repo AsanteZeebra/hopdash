@@ -1582,7 +1582,7 @@ export const Transfer = () => {
                         </td>
                         <td>
                           <Link
-                            to={`/edit-pastor`}
+                            to={`/make-transfer`}
                             className="btn btn-sm btn-primary"
                             title="Transfer Pastor"
                             onClick={() =>
@@ -1592,11 +1592,11 @@ export const Transfer = () => {
                               )
                             }
                           >
-                            <i className="bi bi-pencil-square"></i>
+                            <i className="bi bi-arrow-return-right"></i>
                           </Link>
                           <button
                             className="btn btn-sm btn-danger ms-2"
-                            title="Delete Branch"
+                            title="Delete Pater Profile"
                             data-bs-toggle="modal"
                             data-bs-target="#modalask"
                             onClick={() => setPastorToDelete(pastors)}
