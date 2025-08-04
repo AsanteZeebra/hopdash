@@ -1338,7 +1338,7 @@ export const Transfer = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:8000/api/pastors", {
+      .get("http://api.fremikeconsult.com/api/pastors", {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -1519,7 +1519,7 @@ export const Transfer = () => {
                            <img
                             src={
                               pastors?.photo
-                                ? `http://localhost:8000/storage/${pastors.photo}`
+                                ? `http://api.fremikeconsult.com/storage/${pastors.photo}`
                                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(
                                     pastors?.fullname || "Pastor"
                                   )}&background=0d6efd&color=fff`
