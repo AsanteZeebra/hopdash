@@ -110,9 +110,9 @@ const Dashboard = () => {
     }
   };
   const chartSeries = [
-    { name: "Visitors", data: [30, 55, 75, 80, 60] },
-    { name: "Sales", data: [0, 30, 35, 40, 50] },
-    { name: "Orders", data: [10, 20, 25, 30, 40] },
+    { name: "Adult", data: [30, 55, 75, 80, 60] },
+    { name: "Youth", data: [0, 30, 35, 40, 50] },
+    { name: "Children", data: [10, 20, 25, 30, 40] },
   ];
 
   // Initialize line chart options and series
