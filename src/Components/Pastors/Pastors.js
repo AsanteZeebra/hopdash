@@ -1880,7 +1880,7 @@ export const MakeTransfer = () => {
                   <label className="form-label">To</label>
                   <input
                     type="date"
-                    {...register("to_date", { required: true })}
+                     
                     className="form-control"
                     placeholder="Enter To Date"
                   />
@@ -1896,20 +1896,9 @@ export const MakeTransfer = () => {
 
               <div className="col-lg-6 col-sm-4 col-12">
                 <div className="mb-3">
-                  <label className="form-label">Status</label>
-                  <select
-                    className="form-select"
-                    {...register("status", { required: true })}
-                  >
-                    <option value="">-Select-</option>
-                    <option value="active">Active</option>
-                    <option value="transferred">Transferred</option>
-                    <option value="suspended">Suspended</option>
-                    <option value="sacked">Sacked</option>
-                    <option value="retired">Retired</option>
-                    <option value="blocked">Blocked</option>
-                  </select>
-                  {errors.status && (
+                  <label className="form-label">Additional Comment</label>
+                  <textarea className="form-control" rows={3} {...register("comment", { required: true })} > </textarea>
+                  {errors.comment && (
                     <small className="text-danger">Status is required</small>
                   )}
                 </div>
