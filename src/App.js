@@ -15,6 +15,7 @@ import AddBranch from "./Components/Branches/Add_Branch";
 import { ViewBranch,BranchActivity,EditBranch } from "./Components/Branches/Add_Branch";
 import { AddPastor,EditPastor,PastorProfile,Transfer,MakeTransfer } from "./Components/Pastors/Pastors";
 import ViewPastors from "./Components/Pastors/Pastors";
+import AttendanceStats from "./Components/Attendance_stats";
 
 
 
@@ -42,6 +43,7 @@ function App() {
         <Route path="/pastor-profile" element={<Layout><PastorProfile/></Layout>} />
         <Route path="/transfer" element={<Layout><Transfer/></Layout>} />
         <Route path="/make-transfer" element={<Layout><MakeTransfer/></Layout>} />
+        <Route path="/attendance-stats" element={<Layout><AttendanceStats/></Layout>} />
 
 
         

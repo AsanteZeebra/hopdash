@@ -190,10 +190,11 @@ const ViewPastors = () => {
                     <th>FullName </th>
                     <th>Title</th>
 
-                    <th>Marital_Status</th>
-                    <th>Children</th>
+                  
+                   
                     <th>Telephone</th>
                     <th>Branch</th>
+                     <th>Due_Date</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
@@ -256,10 +257,14 @@ const ViewPastors = () => {
                         </td>
                         <td>{pastors.title}</td>
 
-                        <td>{pastors.marital_status}</td>
-                        <td>{pastors.children}</td>
+                      
+                        
                         <td>{pastors.telephone}</td>
                         <td>{pastors.branch}</td>
+                        <td>
+                          {pastors.to_date}
+                          
+                        </td>
                         <td>
                           <span
                             className={`badge ${
@@ -1707,7 +1712,7 @@ export const MakeTransfer = () => {
       );
 
       if (response.status === 200) {
-          toast.success(response.data.data, {
+          toast.success("Transfer Success", {
           position: "top-right",
         });
         localStorage.removeItem("pastor_code");

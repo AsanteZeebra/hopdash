@@ -1,13 +1,14 @@
 import React from "react";
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
+import useAuthValidation from "./authentication/auth_validate";
 
 
 
 
 
 const Overview = () => {
-
+  const { token, handleLogout } = useAuthValidation();
 // Sparkline chart options and series
 const sparklineOptions = {
   chart: {

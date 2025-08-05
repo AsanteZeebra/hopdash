@@ -89,26 +89,7 @@ const Sidebar = () => {
                             </ul>
                         </li>
 
-                        {/* Members */}
-                        <li className={`treeview${isTreeActive([
-                            "/create-invoice.html",
-                            "/view-invoice.html"
-                        ]) ? " active current-page" : ""}${openMenus["members"] ? " open" : ""}`}>
-                            <a href="#members" onClick={e => { e.preventDefault(); handleTreeToggle("members"); }}>
-                                <i className="bi bi-people"></i>
-                                <span className="menu-text">Members</span>
-                                {/* Removed duplicate chevron */}
-                            </a>
-                            <ul className="treeview-menu" style={{ display: openMenus["members"] ? "block" : "none" }}>
-                                <li>
-                                    <Link to="/create-invoice.html">Statistics</Link>
-                                </li>
-                                <li>
-                                    <Link to="/view-invoice.html">Add Member</Link>
-                                </li>
-                            </ul>
-                        </li>
-
+                       
                         {/* Attendance */}
                         <li className={`treeview${isTreeActive([
                             "/attendance-national",
@@ -121,7 +102,7 @@ const Sidebar = () => {
                             </a>
                             <ul className="treeview-menu" style={{ display: openMenus["attendance"] ? "block" : "none" }}>
                                 <li>
-                                    <Link to="/attendance-national">National View</Link>
+                                    <Link to="/attendance-stats">National View</Link>
                                 </li>
                                 <li>
                                     <Link to="/attendance-branch">Per Branch View</Link>
