@@ -1592,9 +1592,9 @@ export const Transfer = () => {
                               )
                             }
                           >
-                            <i className="bi bi-arrow-return-right"></i>
+                            <i className="bi bi-arrow-return-right"></i> Transfer
                           </Link>
-                          <button
+                          <button hidden
                             className="btn btn-sm btn-danger ms-2"
                             title="Delete Pater Profile"
                             data-bs-toggle="modal"
