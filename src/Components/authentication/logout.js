@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const logout = async (navigate) => {
   try {
-    await axios.post('http://api.fremikecnsult.com/api/logout', {}, {
+    await axios.post('http://api.fremikeconsult.com/api/logout', {}, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
