@@ -1890,10 +1890,6 @@ export const MakeTransfer = () => {
                 </div>
               </div>
 
-             
-
-          
-
               <div className="col-lg-6 col-sm-4 col-12">
                 <div className="mb-3">
                   <label className="form-label">Additional Comment</label>
