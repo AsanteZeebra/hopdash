@@ -1707,13 +1707,13 @@ export const MakeTransfer = () => {
       );
 
       if (response.status === 200) {
-          toast.success(response.data, {
+          toast.success(response.data.data, {
           position: "top-right",
         });
         localStorage.removeItem("pastor_code");
 
         setTimeout(() => {
-          navigate("/view-pastors");
+          navigate("/transfer");
         }, 2000); // 3000ms = 3 seconds
       }
     } catch (error) {
