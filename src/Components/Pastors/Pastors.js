@@ -1687,21 +1687,15 @@ export const MakeTransfer = () => {
     try {
       const pastor_code = localStorage.getItem("pastor_code");
 
-      const response = await axios.patch(
-        `http://api.fremikeconsult.com/api/update-pastor/${pastor_code}`,
+      const response = await axios.put(
+        `http://api.fremikeconsult.com/api/transfer-pastor/${pastor_code}`,
         {
-          fullname: data.fullname,
-          title: data.title,
-          dob: data.dob,
-          marital_status: data.marital_status,
-          spouse: data.spouse,
-          children: data.children,
-          telephone: data.telephone,
+         
+         
+          branch: data.branch,
           from_date: data.from_date,
           to_date: data.to_date,
-          next_of_kin: data.next_of_kin,
-          emergency_contact: data.emergency_contact,
-          status: data.status || "active",
+        
         },
         {
           headers: {
@@ -1713,7 +1707,7 @@ export const MakeTransfer = () => {
       );
 
       if (response.status === 200) {
-        toast.success("Pastor info updated successfully!", {
+          toast.success(response.data, {
           position: "top-right",
         });
         localStorage.removeItem("pastor_code");
@@ -1784,14 +1778,14 @@ export const MakeTransfer = () => {
                 <div className="mb-3">
                   <label className="form-label">FullName:</label>
                   <input
-                    type="text"
+                    type="text" disabled
                     {...register("fullname", { required: true })}
                     className="form-control"
                     placeholder="Enter FullName"
                   />
                   {errors.FullName && (
                     <small className="text-danger">
-                      Branch Name is required
+                       Name is required
                     </small>
                   )}
                 </div>
@@ -1821,7 +1815,7 @@ export const MakeTransfer = () => {
               <div className="col-lg-6 col-sm-4 col-12">
                 <div className="mb-3">
                   <label className="form-label">Telephone</label>
-                  <input
+                  <input 
                    disabled type="text"
                     {...register("telephone", { required: true })}
                     className="form-control"
@@ -1892,8 +1886,8 @@ export const MakeTransfer = () => {
 
               <div className="col-lg-6 col-sm-4 col-12">
                 <div className="mb-3">
-                  <label className="form-label">Additional Comment</label>
-                  <textarea className="form-control" rows={3} {...register("comment", { required: true })} > </textarea>
+                  <label className="form-label">Comment</label>
+                  <textarea className="form-control" rows={3} {...register("comment", )} placeholder="Additional information about new Branch or Instruction"> </textarea>
                  
                 </div>
               </div>
