@@ -205,7 +205,7 @@ const Viewmembers = () => {
                           <img
                             src={
                               pastors.photo
-                                ? `http://api.fremikecnsult.com/storage/${pastors.photo}`
+                                ? `http://api.fremikeconsult.com/storage/${pastors.photo}`
                                 : "assets/images/pr1.webp"
                             }
                             alt={pastors.fullname}
