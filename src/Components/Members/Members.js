@@ -21,7 +21,7 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.default.vfs;
 window.JSZip = jszip;
 
-const ViewPastors = () => {
+const Viewmembers = () => {
   const [pastor, setPastor] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pastorToDelete, setPastorToDelete] = useState(null);
@@ -32,7 +32,7 @@ const ViewPastors = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://api.fremikecnsult.com/api/pastors", {
+      .get("http://api.fremikeconsult.com/api/pastors", {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -101,7 +101,7 @@ const ViewPastors = () => {
 
     axios
       .delete(
-        `http://api.fremikecnsult.com/api/delete-pastor/${pastorToDelete.pastor_code}`,
+        `http://api.fremikeconsult.com/api/delete-pastor/${pastorToDelete.pastor_code}`,
         {
           headers: {
             Accept: "application/json",
@@ -167,7 +167,7 @@ const ViewPastors = () => {
       {/* Table */}
       <div className="card mb-3">
         <div className="card-header">
-          <h5 className="card-title">Pastors List</h5>
+          <h5 className="card-title">Members List</h5>
         </div>
         <div className="card-body">
           <div className="table-responsive">
@@ -302,7 +302,7 @@ const ViewPastors = () => {
   );
 };
 
-export default ViewPastors;
+export default Viewmembers;
 
 export const AddPastor = () => {
   const { token, handleLogout } = useAuthValidation();

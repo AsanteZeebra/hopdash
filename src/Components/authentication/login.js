@@ -45,7 +45,7 @@ const Login = () => {
         const roleRoutes = {
           Admin: "/dashboard",
           Branch: "/branch",
-          User: "/user", // default fallback
+        
         };
 
         const userRole = result.user.role;

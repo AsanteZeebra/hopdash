@@ -235,12 +235,7 @@ export const Branch_Sidebar = () => {
                                 <span className="menu-text">Dashboard</span>
                             </Link>
                         </li>
-                        <li className={isActive("/overview") ? "active current-page" : ""}>
-                            <Link to="/overview">
-                                <i className="bi bi-bar-chart-line"></i>
-                                <span className="menu-text">Overview</span>
-                            </Link>
-                        </li>
+                       
 
                         {/* Branches */}
                         <li className={`treeview${isTreeActive(["/accordions.html", "/alerts.html", "/buttons.html"]) ? " active current-page" : ""}${openMenus["branches"] ? " open" : ""}`}>
@@ -251,7 +246,7 @@ export const Branch_Sidebar = () => {
                             </a>
                             <ul className="treeview-menu" style={{ display: openMenus["branches"] ? "block" : "none" }}>
                                 <li>
-                                    <Link to="/accordions.html">All Members</Link>
+                                    <Link to="/view-members">All Members</Link>
                                 </li>
                                 <li>
                                     <Link to="/alerts.html">Add Members</Link>

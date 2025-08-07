@@ -16,6 +16,8 @@ import { ViewBranch,BranchActivity,EditBranch } from "./Components/Branches/Add_
 import { AddPastor,EditPastor,PastorProfile,Transfer,MakeTransfer } from "./Components/Pastors/Pastors";
 import ViewPastors from "./Components/Pastors/Pastors";
 import AttendanceStats from "./Components/Attendance_stats";
+import Viewmembers from "./Components/Members/Members";
+
 
 
 
@@ -44,6 +46,7 @@ function App() {
         <Route path="/transfer" element={<Layout><Transfer/></Layout>} />
         <Route path="/make-transfer" element={<Layout><MakeTransfer/></Layout>} />
         <Route path="/attendance-stats" element={<Layout><AttendanceStats/></Layout>} />
+        <Route path="/view-members" element={<Branch_Layout><Viewmembers/></Branch_Layout>} />
 
 
         
