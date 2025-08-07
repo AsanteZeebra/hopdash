@@ -29,6 +29,51 @@ const Viewmembers = () => {
 
   const { token, handleLogout } = useAuthValidation();
 
+ useEffect(() => {
+    if (pastor.length === 0) return;
+
+    // Destroy if already exists
+    if ($.fn.DataTable.isDataTable(tableRef.current)) {
+      $(tableRef.current).DataTable().destroy();
+    }
+
+    $(tableRef.current).DataTable({
+      responsive: true,
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 10,
+      paging: true,
+      searching: true,
+      dom: "Bfrtip",
+      buttons: [
+        {
+          extend: "csv",
+          text: '<i class="bi bi-file-earmark-spreadsheet"></i> CSV',
+          className: "btn btn-light",
+        },
+        {
+          extend: "pdf",
+          text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
+          className: "btn btn-light",
+        },
+        {
+          extend: "print",
+          text: '<i class="bi bi-printer"></i> Print',
+          className: "btn btn-light",
+          customize: function (win) {
+            $(win.document.body)
+              .find("table")
+              .addClass("display")
+              .css("font-size", "9pt");
+            $(win.document.body).find("h1").css("text-align", "center");
+            $(win.document.head).append(
+              '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" type="text/css" />'
+            );
+          },
+        },
+      ],
+    });
+  }, [pastor]);
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -41,60 +86,14 @@ const Viewmembers = () => {
       .then((response) => {
         setPastor(response.data.data);
         setLoading(false);
-
-        if ($.fn.DataTable.isDataTable(tableRef.current)) {
-          $(tableRef.current).DataTable().destroy();
-        }
-
-        $(tableRef.current).DataTable({
-          responsive: true,
-          lengthMenu: [5, 10, 25, 50],
-          pageLength: 10,
-          paging: true,
-          searching: true,
-          destroy: true,
-          dom: "Bfrtip",
-          buttons: [
-            {
-              extend: "csv",
-              text: '<i class="bi bi-file-earmark-spreadsheet"></i> CSV',
-              className: "btn btn-light",
-            },
-            {
-              extend: "pdf",
-              text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
-              className: "btn btn-light",
-            },
-            {
-              extend: "print",
-              text: '<i class="bi bi-printer"></i> Print',
-              className: "btn btn-light",
-              customize: function (win) {
-                $(win.document.body)
-                  .find("table")
-                  .addClass("display")
-                  .css("font-size", "9pt");
-                $(win.document.body).find("h1").css("text-align", "center");
-                $(win.document.head).append(
-                  '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" type="text/css" />'
-                );
-              },
-            },
-          ],
-        });
       })
       .catch((error) => {
         console.error("Error fetching Pastors:", error);
-        toast.error("Error fetching Pastors");
         setLoading(false);
       });
-
-    return () => {
-      if ($.fn.DataTable.isDataTable(tableRef.current)) {
-        $(tableRef.current).DataTable().destroy();
-      }
-    };
   }, []);
+
+
 
   const handleDeleteBranch = () => {
     if (!pastorToDelete) return;
