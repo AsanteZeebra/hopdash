@@ -17,6 +17,8 @@ import { AddPastor,EditPastor,PastorProfile,Transfer,MakeTransfer } from "./Comp
 import ViewPastors from "./Components/Pastors/Pastors";
 import AttendanceStats from "./Components/Attendance_stats";
 import Viewmembers from "./Components/Members/Members";
+import { AddMember } from "./Components/Members/Members";
+
 
 
 
@@ -47,6 +49,7 @@ function App() {
         <Route path="/make-transfer" element={<Layout><MakeTransfer/></Layout>} />
         <Route path="/attendance-stats" element={<Layout><AttendanceStats/></Layout>} />
         <Route path="/view-members" element={<Branch_Layout><Viewmembers/></Branch_Layout>} />
+        <Route path="/add-member" element={<Branch_Layout><AddMember/></Branch_Layout>} />
 
 
         

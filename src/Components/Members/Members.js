@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthValidation from "../authentication/auth_validate";
 import $, { data } from "jquery";
+import "./AddMember.css";
 
 import "datatables.net-bs5";
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
@@ -29,7 +30,7 @@ const Viewmembers = () => {
 
   const { token, handleLogout } = useAuthValidation();
 
- useEffect(() => {
+  useEffect(() => {
     if (pastor.length === 0) return;
 
     // Destroy if already exists
@@ -92,8 +93,6 @@ const Viewmembers = () => {
         setLoading(false);
       });
   }, []);
-
-
 
   const handleDeleteBranch = () => {
     if (!pastorToDelete) return;
@@ -203,7 +202,7 @@ const Viewmembers = () => {
                       <tr key={pastors.pastor_code}>
                         <td>
                           <img
-                           src={
+                            src={
                               pastors?.photo
                                 ? `http://api.fremikeconsult.com/storage/${pastors.photo}`
                                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -216,22 +215,30 @@ const Viewmembers = () => {
                           />
                         </td>
                         <td>
-                          <Link to={"/pastor-profile"} className="nav-link" onClick={() =>
+                          <Link
+                            to={"/pastor-profile"}
+                            className="nav-link"
+                            onClick={() =>
                               localStorage.setItem(
                                 "pastor_code",
                                 pastors.pastor_code
                               )
-                            }>
+                            }
+                          >
                             {pastors.pastor_code}
                           </Link>
                         </td>
                         <td>
-                          <Link to={"/pastor-profile"} className="nav-link" onClick={() =>
+                          <Link
+                            to={"/pastor-profile"}
+                            className="nav-link"
+                            onClick={() =>
                               localStorage.setItem(
                                 "pastor_code",
                                 pastors.pastor_code
                               )
-                            }>
+                            }
+                          >
                             {pastors.fullname}
                           </Link>
                         </td>
@@ -305,66 +312,77 @@ const Viewmembers = () => {
 
 export default Viewmembers;
 
-export const AddPastor = () => {
-  const { token, handleLogout } = useAuthValidation();
-
+export const AddMember = () => {
   const {
     register,
     handleSubmit,
     reset,
-    control,
     formState: { errors },
   } = useForm();
 
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    spouse: "",
+    children: "",
+    photo: null,
+  });
 
-  const onSubmit = async (data) => {
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
+  };
+
+  const nextStep = () => setStep((prev) => prev + 1);
+  const prevStep = () => setStep((prev) => prev - 1);
+
+  const steps = [
+    { icon: "bi-person", label: "Personal Info" },
+    { icon: "bi-people", label: "Family Info" },
+    { icon: "bi-image", label: "Photo Upload" },
+  ];
+
+  const onSubmit = async () => {
     setLoading(true);
     try {
-      const formData = new FormData(); // must use this for file uploads
-
-      formData.append("fullname", data.FullName);
-      formData.append("title", data.Title);
-      formData.append("dob", data.dob);
-      formData.append("marital_status", data.marital_status);
-      formData.append("spouse", data.spouse);
-      formData.append("children", data.children);
-      formData.append("telephone", data.telephone);
-      formData.append("from_date", data.From);
-      formData.append("to_date", data.To);
-      formData.append("next_of_kin", data.next_of_kin ?? "");
-      formData.append("emergency_contact", data.emergency_contact ?? "");
-      formData.append("photo", data.Photo[0]); // required for file
-      formData.append("status", data.status || "active");
+      const payload = new FormData();
+      payload.append("fullname", formData.name);
+      payload.append("email", formData.email);
+      payload.append("spouse", formData.spouse);
+      payload.append("children", formData.children);
+      payload.append("photo", formData.photo);
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/add-pastor",
-        formData,
+        "http://api.fremikeconsult.com/api/add-pastor",
+        payload,
         {
           headers: {
             Accept: "application/json",
-            "Content-Type": "multipart/form-data", // very important!
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
 
       if (response.status === 201) {
-        toast.success("Pastor created successfully!", {
-          position: "top-right",
-        });
+        toast.success("Member Registered Success!", { position: "top-right" });
         reset();
-        setInterval(() => {
-          navigate("/view-pastors");
-        }, 2000); // Redirect after 1 second
+        setTimeout(() => {
+          navigate("/view-members");
+        }, 2000);
       }
     } catch (error) {
       console.error(error);
       setLoading(false);
       if (error.response?.status === 422) {
-        Object.values(error.response.data.errors).forEach((messages) => {
-          toast.error(messages[0], { position: "top-right" });
+        Object.values(error.response.data.errors).forEach((msg) => {
+          toast.error(msg[0], { position: "top-right" });
         });
       } else {
         toast.error("An unexpected error occurred!", { position: "top-right" });
@@ -375,228 +393,256 @@ export const AddPastor = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="col-xxl-12">
-        <div className="card mb-3">
-          <div className="card-header">
-            <h5 className="card-title">Add New Pastor</h5>
+    <form onSubmit={handleSubmit(onSubmit)} className="container mt-4">
+      <div className="card">
+        <div className="card-header">
+          <h5 className="card-title">Add New Member</h5>
+        </div>
+        <div className="card-body">
+          {/* Step Indicator */}
+          <div className="stepper mb-4">
+            {steps.map((s, index) => (
+              <div
+                key={index}
+                className={`step ${step === index + 1 ? "active" : ""}`}
+              >
+                <i className={`bi ${s.icon}`}></i>
+                <div>{s.label}</div>
+              </div>
+            ))}
           </div>
 
-          <div className="card-body">
-            <div className="row gx-3">
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">FullName:</label>
-                  <input
-                    type="text"
-                    {...register("FullName", { required: true })}
-                    className="form-control"
-                    placeholder="Enter FullName"
-                  />
-                  {errors.FullName && (
-                    <small className="text-danger">
-                      Branch Name is required
-                    </small>
-                  )}
+          {/* Step Content */}
+          {step === 1 && (
+            <div className="step-content">
+              <div className="row gx-3">
+                <div className="col-lg-12 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">FullName:</label>
+                    <input
+                      type="text"
+                      onChange={handleChange}
+                      {...register("FullName", { required: true })}
+                      className="form-control"
+                      placeholder="Enter FullName"
+                    />
+                    {errors.FullName && (
+                      <small className="text-danger">Name is required</small>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">Tittle</label>
-                  <select
-                    className="form-select"
-                    {...register("Title", { required: true })}
-                  >
-                    <option value="">-Select-</option>
-                    <option value="Rev.">Rev.</option>
-                    <option value="Pastor">Pastor</option>
-                    <option value="Bishop">Bishop</option>
-                    <option value="Apostle">Apostle</option>
-                    <option value="Evangelist">Evangelist</option>
-                  </select>
-                  {errors.Tittle && (
-                    <small className="text-danger">Tittle is required</small>
-                  )}
+              <div className="row gx-3">
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Date of birth:</label>
+                    <input
+                      type="date"
+                      onChange={handleChange}
+                      {...register("dob", { required: true })}
+                      className="form-control"
+                      placeholder="Enter Date of Birth"
+                    />
+                    {errors.dob && (
+                      <small className="text-danger">
+                        Date of birth is required
+                      </small>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Alter Call:</label>
+                    <input
+                      type="date"
+                      onChange={handleChange}
+                      {...register("alter_call", { required: true })}
+                      className="form-control"
+                      placeholder="Enter Date of Alter Call"
+                    />
+                    {errors.alter_call && (
+                      <small className="text-danger">
+                        Date of Alter Call is required
+                      </small>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">Date of Birth</label>
-                  <input
-                    type="date"
-                    {...register("dob", { required: true })}
-                    className="form-control"
-                    placeholder="Enter Date of Birth"
-                  />
-                  {errors.dob && (
-                    <small className="text-danger">
-                      Date of Birth is required
-                    </small>
-                  )}
+              <div className="row gx-3">
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Gender</label>
+                    <select
+                      className="form-select"
+                      {...register("Gender", { required: true })}
+                    >
+                      <option value="">-Select Gender-</option>
+                      <option value="male">Male</option>
+                      <option value="femal">Female</option>
+                    </select>
+                    {errors.gender && (
+                      <small className="text-danger">
+                        Please select gender
+                      </small>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Marital_Status</label>
+                    <select
+                      className="form-select"
+                      {...register("marital_status", { required: true })}
+                    >
+                      <option value="">-Select-</option>
+                      <option value="married">Married</option>
+                      <option value="single">Single</option>
+                      <option value="divorced">Divorced</option>
+                      <option value="widowed">Widowed</option>
+                    </select>
+                    {errors.Marital_Status && (
+                      <small className="text-danger">
+                        Marital_Status is required
+                      </small>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">Marital_Status</label>
-                  <select
-                    className="form-select"
-                    {...register("marital_status", { required: true })}
-                  >
-                    <option value="">-Select-</option>
-                    <option value="married">Married</option>
-                    <option value="single">Single</option>
-                    <option value="divorced">Divorced</option>
-                    <option value="widowed">Widowed</option>
-                  </select>
-                  {errors.Marital_Status && (
-                    <small className="text-danger">
-                      Marital_Status is required
-                    </small>
-                  )}
+              <div className="row gx-3">
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Occupation:</label>
+                    <input
+                      type="text"
+                      onChange={handleChange}
+                      {...register("dob", { required: true })}
+                      className="form-control"
+                      placeholder="Please Enter Occupation"
+                    />
+                    {errors.occupation && (
+                      <small className="text-danger">
+                        Occupation is required
+                      </small>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">Spouse</label>
-                  <input
-                    type="text"
-                    {...register("spouse", { required: true })}
-                    className="form-control"
-                    placeholder="Enter Spouse Name"
-                  />
-                  {errors.Spouse && (
-                    <small className="text-danger">
-                      Spouse Name is required
-                    </small>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">No. of Children</label>
-                  <input
-                    type="number"
-                    {...register("children", { required: true })}
-                    className="form-control"
-                    placeholder="Enter Number of Children"
-                  />
-                  {errors.Children && (
-                    <small className="text-danger">
-                      Number of Children is required
-                    </small>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">Telephone</label>
-                  <input
-                    type="number"
-                    {...register("telephone", { required: true })}
-                    className="form-control"
-                    placeholder="Enter Telephone"
-                  />
-                  {errors.Telephone && (
-                    <small className="text-danger">Telephone is required</small>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">From</label>
-                  <input
-                    type="date"
-                    {...register("From", { required: true })}
-                    className="form-control"
-                    placeholder="From Date is required"
-                  />
-                  {errors.From && (
-                    <small className="text-danger">From Date is required</small>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">To</label>
-                  <input
-                    type="date"
-                    {...register("To", { required: true })}
-                    className="form-control"
-                    placeholder="Enter To Date"
-                  />
-                  {errors.To && (
-                    <small className="text-danger">To Date is required</small>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">Choose Photo</label>
-                  <input
-                    type="file"
-                    {...register("Photo", { required: true })}
-                    className="form-control"
-                    placeholder="Please Choose Photo"
-                  />
-                  {errors.Photo && (
-                    <small className="text-danger">Photo is required</small>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">Next_of_kin</label>
-                  <input
-                    type="text"
-                    {...register("next_of_kin", { required: true })}
-                    className="form-control"
-                    placeholder="Enter next of kin "
-                  />
-                  {errors.next_of_kin && (
-                    <small className="text-danger">
-                      Next_of_kin info is required
-                    </small>
-                  )}
-                </div>
-              </div>
-
-              <div className="col-lg-6 col-sm-4 col-12">
-                <div className="mb-3">
-                  <label className="form-label">Emergency Contact info</label>
-                  <input
-                    type="text"
-                    {...register("emergency_contact", { required: true })}
-                    className="form-control"
-                    placeholder="Enter emergency contact info"
-                  />
-                  {errors.emergency_contact && (
-                    <small className="text-danger">
-                      Emergency contact info is required
-                    </small>
-                  )}
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Telephone:</label>
+                    <input
+                      type="telephone"
+                      onChange={handleChange}
+                      {...register("telephone", { required: true })}
+                      className="form-control"
+                      placeholder="Enter Telephone"
+                    />
+                    {errors.telephone && (
+                      <small className="text-danger">
+                      Please Enter Telephone Number
+                      </small>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
-          <div className="card-footer">
-            <div className="d-flex gap-2 justify-content-end">
-              <button type="button" className="btn btn-outline-secondary">
-                Cancel
+          {step === 2 && (
+            <div className="step-content">
+              <div className="row gx-3">
+                <div className="col-lg-12 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Spouse:</label>
+                    <input
+                      type="text"
+                      onChange={handleChange}
+                      {...register("spouse", { required: true })}
+                      className="form-control"
+                      placeholder="Enter spouse name"
+                    />
+                    {errors.FullName && (
+                      <small className="text-danger">Spouse name is required</small>
+                    )}
+                  </div>
+                </div>
+                
+              </div>
+              <div className="row gx-3">
+               
+                 <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">No. of children:</label>
+                    <input
+                      type="number"
+                      onChange={handleChange}
+                      {...register("children", { required: true })}
+                      className="form-control"
+                      placeholder="Enter number of children"
+                    />
+                    {errors.children && (
+                      <small className="text-danger">Enter Number of Chidren</small>
+                    )}
+                  </div>
+                </div>
+
+                
+              </div>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="step-content">
+              <div className="mb-3">
+                <label>Upload Photo:</label>
+                <input
+                  type="file"
+                  name="photo"
+                  accept="image/*"
+                  onChange={handleChange}
+                  className="form-control"
+                />
+                {formData.photo && (
+                  <img
+                    src={URL.createObjectURL(formData.photo)}
+                    alt="Preview"
+                    className="img-thumbnail mt-3"
+                    style={{ width: "150px" }}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Navigation Buttons */}
+          <div className="button-group">
+            {step > 1 && (
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={prevStep}
+              >
+                <i className="bi bi-arrow-left"></i> Back
               </button>
+            )}
+            {step < steps.length && (
+              <button
+                type="button"
+                className="btn btn-primary ms-auto"
+                onClick={nextStep}
+              >
+                Next <i className="bi bi-arrow-right"></i>
+              </button>
+            )}
+            {step === steps.length && (
               <button
                 type="submit"
-                className="btn btn-success"
+                className="btn btn-success ms-auto"
                 disabled={loading}
               >
                 {loading ? (
@@ -605,10 +651,12 @@ export const AddPastor = () => {
                     <span className="ms-2">loading...</span>
                   </span>
                 ) : (
-                  "Submit"
+                  <>
+                    <i className="bi bi-check-circle"></i> Submit
+                  </>
                 )}
               </button>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -991,17 +1039,16 @@ export const EditPastor = () => {
 export const PastorProfile = () => {
   const { token, handleLogout } = useAuthValidation();
   const [loading, setLoading] = useState(false);
-  const [pastorData,setPastorData]=useState(null);
+  const [pastorData, setPastorData] = useState(null);
   const [error, setError] = useState("");
 
-  
-   useEffect(() => {
+  useEffect(() => {
     const PastorDetails = async () => {
-       const pastor_code = localStorage.getItem("pastor_code");
+      const pastor_code = localStorage.getItem("pastor_code");
       if (!pastor_code) return;
 
-    try {
-      const response = await axios.get(
+      try {
+        const response = await axios.get(
           `http://127.0.0.1:8000/api/fetch-pastor/${pastor_code}`,
           {
             headers: {
@@ -1010,27 +1057,25 @@ export const PastorProfile = () => {
             },
           }
         );
-       
-      if (response.data.status === "success") {
-        setPastorData(response.data.data);
-      } else {
-        setError(response.data.message);
+
+        if (response.data.status === "success") {
+          setPastorData(response.data.data);
+        } else {
+          setError(response.data.message);
+        }
+      } catch (error) {
+        setError("Error Fateching Pastor Details. Please try again.");
       }
-    } catch (error) {
-      setError("Error Fateching Pastor Details. Please try again.");
-    }
-  };
-PastorDetails();
-    }, []);
-  
+    };
+    PastorDetails();
+  }, []);
+
   return (
     <>
       <div className="row justify-content-center">
         <div className="col-xxl-12">
           <div className="card mb-3">
-            
             <div className="card-body">
-
               <div className="row align-items-center">
                 <div className="col-auto">
                   {/* <img
@@ -1050,7 +1095,6 @@ PastorDetails();
                   </Link>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>
@@ -1068,11 +1112,14 @@ PastorDetails();
                   <b>Pastor ID: </b>
                   <span> {pastorData?.pastor_code || "N/A"}</span>
                 </li>
-                 <li className="list-group-item">
+                <li className="list-group-item">
                   <b>Since: </b>
-                  <span> {new Date(pastorData.created_at).toLocaleDateString()}</span>
+                  <span>
+                    {" "}
+                    {new Date(pastorData.created_at).toLocaleDateString()}
+                  </span>
                 </li>
-                 <li className="list-group-item">
+                <li className="list-group-item">
                   <b>Stationed_at: </b>
                   <span> {pastorData?.branch}</span>
                 </li>
@@ -1175,61 +1222,74 @@ PastorDetails();
 
         <div className="col-xxl-9 col-sm-12 col-12 order-xxl-2 order-xl-1 order-lg-1 order-md-1 order-sm-1">
           <div className="card mb-3">
-           <div className="card-body">
-  <ul className="list-group list-group-flush">
-  <li className="list-group-item">
-    <div className="row">
-      <div className="col-6 fw-bold">Full Name:</div>
-      <div className="col-6 text-end">{pastorData?.fullname || "N/A"}</div>
-    </div>
-  </li>
-  <li className="list-group-item">
-    <div className="row">
-      <div className="col-6 fw-bold">Date of Birth:</div>
-      <div className="col-6 text-end">{pastorData?.dob || "N/A"}</div>
-    </div>
-  </li>
-  <li className="list-group-item">
-    <div className="row">
-      <div className="col-6 fw-bold">Marital Status:</div>
-      <div className="col-6 text-end">{pastorData?.spouse || "N/A"}</div>
-    </div>
-  </li>
-  <li className="list-group-item">
-    <div className="row">
-      <div className="col-6 fw-bold">Spouse:</div>
-      <div className="col-6 text-end">{pastorData?.spouse_name || "N/A"}</div>
-    </div>
-  </li>
-  <li className="list-group-item">
-    <div className="row">
-      <div className="col-6 fw-bold">Children:</div>
-      <div className="col-6 text-end">{pastorData?.children || "N/A"}</div>
-    </div>
-  </li>
-  <li className="list-group-item">
-    <div className="row">
-      <div className="col-6 fw-bold">Phone:</div>
-      <div className="col-6 text-end">{pastorData?.telephone || "N/A"}</div>
-    </div>
-  </li>
-  <li className="list-group-item">
-    <div className="row">
-      <div className="col-6 fw-bold">Next of Kin:</div>
-      <div className="col-6 text-end">{pastorData?.next_of_kin || "N/A"}</div>
-    </div>
-  </li>
-  <li className="list-group-item">
-    <div className="row">
-      <div className="col-6 fw-bold">Emergency Contact:</div>
-      <div className="col-6 text-end">{pastorData?.emergency_contact || "N/A"}</div>
-    </div>
-  </li>
-</ul>
-
-</div>
-
-         
+            <div className="card-body">
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col-6 fw-bold">Full Name:</div>
+                    <div className="col-6 text-end">
+                      {pastorData?.fullname || "N/A"}
+                    </div>
+                  </div>
+                </li>
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col-6 fw-bold">Date of Birth:</div>
+                    <div className="col-6 text-end">
+                      {pastorData?.dob || "N/A"}
+                    </div>
+                  </div>
+                </li>
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col-6 fw-bold">Marital Status:</div>
+                    <div className="col-6 text-end">
+                      {pastorData?.spouse || "N/A"}
+                    </div>
+                  </div>
+                </li>
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col-6 fw-bold">Spouse:</div>
+                    <div className="col-6 text-end">
+                      {pastorData?.spouse_name || "N/A"}
+                    </div>
+                  </div>
+                </li>
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col-6 fw-bold">Children:</div>
+                    <div className="col-6 text-end">
+                      {pastorData?.children || "N/A"}
+                    </div>
+                  </div>
+                </li>
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col-6 fw-bold">Phone:</div>
+                    <div className="col-6 text-end">
+                      {pastorData?.telephone || "N/A"}
+                    </div>
+                  </div>
+                </li>
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col-6 fw-bold">Next of Kin:</div>
+                    <div className="col-6 text-end">
+                      {pastorData?.next_of_kin || "N/A"}
+                    </div>
+                  </div>
+                </li>
+                <li className="list-group-item">
+                  <div className="row">
+                    <div className="col-6 fw-bold">Emergency Contact:</div>
+                    <div className="col-6 text-end">
+                      {pastorData?.emergency_contact || "N/A"}
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
           <div className="card mb-3">
             <div className="card-header">
@@ -1257,14 +1317,10 @@ PastorDetails();
                     <p className="m-0">Rev. Prince Atta Poku</p>
                   </div>
                 </li>
-               
-               
               </ul>
             </div>
           </div>
         </div>
-
-      
       </div>
     </>
   );

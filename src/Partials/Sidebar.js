@@ -249,10 +249,10 @@ export const Branch_Sidebar = () => {
                                     <Link to="/view-members">All Members</Link>
                                 </li>
                                 <li>
-                                    <Link to="/alerts.html">Add Members</Link>
+                                    <Link to="/add-member">Add Members</Link>
                                 </li>
                                 <li>
-                                    <Link to="/buttons.html">Members Profile</Link>
+                                    <Link to="/">Members Profile</Link>
                                 </li>
                             </ul>
                         </li>

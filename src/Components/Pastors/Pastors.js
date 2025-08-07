@@ -445,7 +445,7 @@ export const AddPastor = () => {
                   />
                   {errors.FullName && (
                     <small className="text-danger">
-                      Branch Name is required
+                       Name is required
                     </small>
                   )}
                 </div>
