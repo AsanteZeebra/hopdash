@@ -1131,6 +1131,7 @@ export const PastorProfile = () => {
       );
       toast.success(response.data.message, { position: "top-right" });
       setFile(null);
+        window.location.reload();
     } catch (error) {
       toast.error("Upload failed", {
         position: "top-right",
