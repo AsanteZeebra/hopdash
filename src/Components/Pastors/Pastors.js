@@ -1106,11 +1106,12 @@ export const PastorProfile = () => {
   };
 
   const handleUpload = async () => {
+    setLoading(true); // Start spinner
     const pastorCode = localStorage.getItem("pastor_code");
     const token = localStorage.getItem("token");
     if (!pastorCode || !file) {
-      //alert("Pastor code or photo missing");
       toast.error("Pastor code or photo missing", { position: "top-right" });
+      setLoading(false); // Stop spinner if error
       return;
     }
 
@@ -1124,20 +1125,18 @@ export const PastorProfile = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`, // If using auth
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
-     
       toast.success(response.data.message, { position: "top-right" });
-      setFile(null); // Clear the file input after successful upload
+      setFile(null);
     } catch (error) {
-      toast.error("Upload failed", error.response?.data || error.message, {
+      toast.error("Upload failed", {
         position: "top-right",
       });
-      //console.error("Upload error:", error.response?.data || error.message);
-      //alert("Upload failed!");
+    } finally {
+      setLoading(false); // Always stop spinner
     }
   };
 
@@ -1201,6 +1200,7 @@ export const PastorProfile = () => {
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
+
             </div>
             <div class="modal-body">
               <form>
@@ -1220,12 +1220,20 @@ export const PastorProfile = () => {
               >
                 Close
               </button>
-              <button
-                type="button"
-                onClick={handleUpload}
-                class="btn btn-primary"
+            
+               <button
+                type="submit"
+                className="btn btn-success"
+                disabled={loading} onClick={handleUpload}
               >
-                Save changes
+                {loading ? (
+                  <span className="d-flex align-items-center justify-content-center">
+                    <ClipLoader color="#fff" size={20} />
+                    <span className="ms-2">loading...</span>
+                  </span>
+                ) : (
+                  "Save"
+                )}
               </button>
             </div>
           </div>
