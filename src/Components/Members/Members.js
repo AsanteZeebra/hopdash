@@ -203,10 +203,12 @@ const Viewmembers = () => {
                       <tr key={pastors.pastor_code}>
                         <td>
                           <img
-                            src={
-                              pastors.photo
+                           src={
+                              pastors?.photo
                                 ? `http://api.fremikeconsult.com/storage/${pastors.photo}`
-                                : "assets/images/pr1.webp"
+                                : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                                    pastors?.fullname || "Pastor"
+                                  )}&background=0d6efd&color=fff`
                             }
                             alt={pastors.fullname}
                             className="img-fluid "
