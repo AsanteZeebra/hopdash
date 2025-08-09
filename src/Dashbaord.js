@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAuthValidation from "./Components/authentication/auth_validate";
+import "./Components/Members/AddMember.css";
 
 // Spline area chart options and series
 const areaChartOptions = {

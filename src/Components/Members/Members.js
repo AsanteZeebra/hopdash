@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { ghanaRegionsAndDistricts } from "../Branches/districts_and_regions";
 import Select from "react-select";
 import { ClipLoader } from "react-spinners";
 import axios from "axios";
@@ -7,7 +8,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthValidation from "../authentication/auth_validate";
 import $, { data } from "jquery";
-import "./AddMember.css";
+
+
 
 import "datatables.net-bs5";
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
@@ -23,15 +25,15 @@ pdfMake.vfs = pdfFonts.default.vfs;
 window.JSZip = jszip;
 
 const Viewmembers = () => {
-  const [pastor, setPastor] = useState([]);
+  const [member, setMember] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [pastorToDelete, setPastorToDelete] = useState(null);
+  const [membertoDelete, setMemberToDelete] = useState(null);
   const tableRef = useRef(null);
 
   const { token, handleLogout } = useAuthValidation();
 
   useEffect(() => {
-    if (pastor.length === 0) return;
+    if (member.length === 0) return;
 
     // Destroy if already exists
     if ($.fn.DataTable.isDataTable(tableRef.current)) {
@@ -73,33 +75,34 @@ const Viewmembers = () => {
         },
       ],
     });
-  }, [pastor]);
+  }, [member]);
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://api.fremikeconsult.com/api/pastors", {
+      .get("http://api.fremikeconsult.com/api/members", {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .then((response) => {
-        setPastor(response.data.data);
+        setMember(response.data.data);
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching Pastors:", error);
+        console.error("Error fetching Members:", error);
+        toast.error("Error fetching Members");
         setLoading(false);
       });
   }, []);
 
-  const handleDeleteBranch = () => {
-    if (!pastorToDelete) return;
+  const handleDeleteMember = () => {
+    if (!membertoDelete) return;
 
     axios
       .delete(
-        `http://api.fremikeconsult.com/api/delete-pastor/${pastorToDelete.pastor_code}`,
+        `http://api.fremikeconsult.com/api/delete-pastor/${membertoDelete.member_id}`,
         {
           headers: {
             Accept: "application/json",
@@ -108,11 +111,11 @@ const Viewmembers = () => {
         }
       )
       .then(() => {
-        setPastor((prev) =>
-          prev.filter((b) => b.pastor_code !== pastorToDelete.pastor_code)
+        setMember((prev) =>
+          prev.filter((b) => b.member_id !== membertoDelete.member_id)
         );
         toast.success("Pastor Deleted Success!");
-        setPastorToDelete(null);
+        setMemberToDelete(null);
       })
       .catch((error) => {
         console.error("Error deleting pastor:", error);
@@ -145,7 +148,7 @@ const Viewmembers = () => {
               <button
                 type="button"
                 className="btn text-danger fs-6 col-6 m-0 border-end"
-                onClick={handleDeleteBranch}
+                onClick={handleDeleteMember}
                 data-bs-dismiss="modal"
               >
                 <strong>Yes, Delete</strong>
@@ -186,46 +189,45 @@ const Viewmembers = () => {
                     <th></th>
                     <th> ID</th>
                     <th>FullName </th>
-                    <th>Title</th>
-
+                    <th>DOB</th>
+                    <th>Age</th>
                     <th>Marital_Status</th>
-                    <th>Children</th>
+                    <th>City/Town</th>
                     <th>Telephone</th>
-                    <th>Date</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {pastor && pastor.length > 0 ? (
-                    pastor.map((pastors) => (
-                      <tr key={pastors.pastor_code}>
+                  {member && member.length > 0 ? (
+                    member.map((members) => (
+                      <tr key={members.member_id}>
                         <td>
                           <img
                             src={
-                              pastors?.photo
-                                ? `http://api.fremikeconsult.com/storage/${pastors.photo}`
+                              members?.photo
+                                ? `http://api.fremikeconsult.com/storage/${members.photo}`
                                 : `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                                    pastors?.fullname || "Pastor"
+                                    members?.fullname || "Pastor"
                                   )}&background=0d6efd&color=fff`
                             }
-                            alt={pastors.fullname}
+                            alt={members.fullname}
                             className="img-fluid "
                             style={{ width: "50px", height: "50px" }}
                           />
                         </td>
                         <td>
                           <Link
-                            to={"/pastor-profile"}
+                            to={"/member-profile"}
                             className="nav-link"
                             onClick={() =>
                               localStorage.setItem(
-                                "pastor_code",
-                                pastors.pastor_code
+                                "member_id",
+                                members.member_id
                               )
                             }
                           >
-                            {pastors.pastor_code}
+                            {members.member_id}
                           </Link>
                         </td>
                         <td>
@@ -234,48 +236,48 @@ const Viewmembers = () => {
                             className="nav-link"
                             onClick={() =>
                               localStorage.setItem(
-                                "pastor_code",
-                                pastors.pastor_code
+                                "member_id",
+                                members.member_id
                               )
                             }
                           >
-                            {pastors.fullname}
+                            {members.fullname}
                           </Link>
                         </td>
-                        <td>{pastors.title}</td>
-
-                        <td>{pastors.marital_status}</td>
-                        <td>{pastors.children}</td>
-                        <td>{pastors.telephone}</td>
+                        <td>{members.dob}</td>
+                        <ts>{members.age}</ts>
+                        <td>{members.marital_status}</td>
+                        <td>{members.city}</td>
+                        <td>{members.telephone}</td>
                         <td>
-                          {new Date(pastors.created_at).toLocaleDateString()}
+                          {new Date(members.created_at).toLocaleDateString()}
                         </td>
                         <td>
                           <span
                             className={`badge ${
-                              pastors.status === "active" ||
-                              pastors.status === "transferred"
+                              members.status === "active" ||
+                              members.status === "transferred"
                                 ? "bg-success"
-                                : pastors.status === "retired"
+                                : members.status === "retired"
                                 ? "bg-warning"
-                                : pastors.status === "suspended" ||
-                                  pastors.status === "Blocked"
+                                : members.status === "suspended" ||
+                                  members.status === "Blocked"
                                 ? "bg-danger"
                                 : "bg-secondary"
                             }`}
                           >
-                            {pastors.status}
+                            {members.status}
                           </span>
                         </td>
                         <td>
                           <Link
-                            to={`/edit-pastor`}
+                            to={`/edit-member`}
                             className="btn btn-sm btn-primary"
                             title="Edit Branch"
                             onClick={() =>
                               localStorage.setItem(
                                 "pastor_code",
-                                pastors.pastor_code
+                                members.member_id
                               )
                             }
                           >
@@ -286,7 +288,7 @@ const Viewmembers = () => {
                             title="Delete Branch"
                             data-bs-toggle="modal"
                             data-bs-target="#modalask"
-                            onClick={() => setPastorToDelete(pastors)}
+                            onClick={() => setMemberToDelete(members)}
                           >
                             <i className="bi bi-trash3"></i>
                           </button>
@@ -316,18 +318,31 @@ export const AddMember = () => {
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { errors },
+    trigger
   } = useForm();
 
   const navigate = useNavigate();
+  const [selectedRegion, setSelectedRegion] = useState(null);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    fullname: "",
+    dob: "",
+    alter_call: "",
+    gender: "",
+    marital_status: "",
+    occupation: "",
+    telephone: "",
     spouse: "",
     children: "",
+    city: "",
+    region: "",
+    address: "",
+    next_of_kin: "",
+    emergency: "",
     photo: null,
   });
 
@@ -339,7 +354,16 @@ export const AddMember = () => {
     }));
   };
 
-  const nextStep = () => setStep((prev) => prev + 1);
+  const nextStep = async () => {
+    let fieldsToValidate = [];
+    if (step === 1) {
+      fieldsToValidate = ["fullname", "dob", "alter_call", "gender", "marital_status", "occupation", "telephone"];
+    } else if (step === 2) {
+      fieldsToValidate = ["spouse", "children", "city", "region", "address", "next_of_kin", "emergency"];
+    }
+    const valid = await trigger(fieldsToValidate);
+    if (valid) setStep((prev) => prev + 1);
+  };
   const prevStep = () => setStep((prev) => prev - 1);
 
   const steps = [
@@ -348,14 +372,24 @@ export const AddMember = () => {
     { icon: "bi-image", label: "Photo Upload" },
   ];
 
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
     setLoading(true);
     try {
       const payload = new FormData();
-      payload.append("fullname", formData.name);
-      payload.append("email", formData.email);
-      payload.append("spouse", formData.spouse);
-      payload.append("children", formData.children);
+      payload.append("fullname", data.fullname);
+      payload.append("dob", data.dob);
+      payload.append("alter_call", data.alter_call);
+      payload.append("gender", data.gender);
+      payload.append("marital_status", data.marital_status);
+      payload.append("occupation", data.occupation);
+      payload.append("telephone", data.telephone);
+      payload.append("spouse", data.spouse);
+      payload.append("children", data.children);
+      payload.append("city", data.city);
+      payload.append("region", data.region?.value || "");
+      payload.append("address", data.address);
+      payload.append("next_of_kin", data.next_of_kin);
+      payload.append("emergency", data.emergency);
       payload.append("photo", formData.photo);
 
       const response = await axios.post(
@@ -378,7 +412,6 @@ export const AddMember = () => {
         }, 2000);
       }
     } catch (error) {
-      console.error(error);
       setLoading(false);
       if (error.response?.status === 422) {
         Object.values(error.response.data.errors).forEach((msg) => {
@@ -391,6 +424,11 @@ export const AddMember = () => {
       setLoading(false);
     }
   };
+
+  const regionOptions = Object.keys(ghanaRegionsAndDistricts).map((region) => ({
+    value: region,
+    label: region,
+  }));
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="container mt-4">
@@ -421,12 +459,11 @@ export const AddMember = () => {
                     <label className="form-label">FullName:</label>
                     <input
                       type="text"
-                      onChange={handleChange}
-                      {...register("FullName", { required: true })}
+                      {...register("fullname", { required: true })}
                       className="form-control"
                       placeholder="Enter FullName"
                     />
-                    {errors.FullName && (
+                    {errors.fullname && (
                       <small className="text-danger">Name is required</small>
                     )}
                   </div>
@@ -439,7 +476,6 @@ export const AddMember = () => {
                     <label className="form-label">Date of birth:</label>
                     <input
                       type="date"
-                      onChange={handleChange}
                       {...register("dob", { required: true })}
                       className="form-control"
                       placeholder="Enter Date of Birth"
@@ -457,7 +493,6 @@ export const AddMember = () => {
                     <label className="form-label">Alter Call:</label>
                     <input
                       type="date"
-                      onChange={handleChange}
                       {...register("alter_call", { required: true })}
                       className="form-control"
                       placeholder="Enter Date of Alter Call"
@@ -477,11 +512,11 @@ export const AddMember = () => {
                     <label className="form-label">Gender</label>
                     <select
                       className="form-select"
-                      {...register("Gender", { required: true })}
+                      {...register("gender", { required: true })}
                     >
                       <option value="">-Select Gender-</option>
                       <option value="male">Male</option>
-                      <option value="femal">Female</option>
+                      <option value="female">Female</option>
                     </select>
                     {errors.gender && (
                       <small className="text-danger">
@@ -493,7 +528,7 @@ export const AddMember = () => {
 
                 <div className="col-lg-6 col-sm-4 col-12">
                   <div className="mb-3">
-                    <label className="form-label">Marital_Status</label>
+                    <label className="form-label">Marital Status</label>
                     <select
                       className="form-select"
                       {...register("marital_status", { required: true })}
@@ -504,9 +539,9 @@ export const AddMember = () => {
                       <option value="divorced">Divorced</option>
                       <option value="widowed">Widowed</option>
                     </select>
-                    {errors.Marital_Status && (
+                    {errors.marital_status && (
                       <small className="text-danger">
-                        Marital_Status is required
+                        Marital Status is required
                       </small>
                     )}
                   </div>
@@ -519,8 +554,7 @@ export const AddMember = () => {
                     <label className="form-label">Occupation:</label>
                     <input
                       type="text"
-                      onChange={handleChange}
-                      {...register("dob", { required: true })}
+                      {...register("occupation", { required: true })}
                       className="form-control"
                       placeholder="Please Enter Occupation"
                     />
@@ -536,15 +570,14 @@ export const AddMember = () => {
                   <div className="mb-3">
                     <label className="form-label">Telephone:</label>
                     <input
-                      type="telephone"
-                      onChange={handleChange}
+                      type="tel"
                       {...register("telephone", { required: true })}
                       className="form-control"
                       placeholder="Enter Telephone"
                     />
                     {errors.telephone && (
                       <small className="text-danger">
-                      Please Enter Telephone Number
+                        Please Enter Telephone Number
                       </small>
                     )}
                   </div>
@@ -561,37 +594,125 @@ export const AddMember = () => {
                     <label className="form-label">Spouse:</label>
                     <input
                       type="text"
-                      onChange={handleChange}
                       {...register("spouse", { required: true })}
                       className="form-control"
                       placeholder="Enter spouse name"
                     />
-                    {errors.FullName && (
-                      <small className="text-danger">Spouse name is required</small>
+                    {errors.spouse && (
+                      <small className="text-danger">
+                        Spouse name is required
+                      </small>
                     )}
                   </div>
                 </div>
-                
               </div>
               <div className="row gx-3">
-               
-                 <div className="col-lg-6 col-sm-4 col-12">
+                <div className="col-lg-6 col-sm-4 col-12">
                   <div className="mb-3">
                     <label className="form-label">No. of children:</label>
                     <input
                       type="number"
-                      onChange={handleChange}
                       {...register("children", { required: true })}
                       className="form-control"
                       placeholder="Enter number of children"
                     />
                     {errors.children && (
-                      <small className="text-danger">Enter Number of Chidren</small>
+                      <small className="text-danger">
+                        Enter Number of Children
+                      </small>
                     )}
                   </div>
                 </div>
 
-                
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">City/Town:</label>
+                    <input
+                      type="text"
+                      {...register("city", { required: true })}
+                      className="form-control"
+                      placeholder="Enter City/Town"
+                    />
+                    {errors.city && (
+                      <small className="text-danger">Enter city / Town</small>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="row gx-3">
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Region</label>
+                    <Controller
+                      name="region"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          options={regionOptions}
+                          value={selectedRegion}
+                          onChange={(val) => {
+                            setSelectedRegion(val);
+                            field.onChange(val);
+                          }}
+                          placeholder="Select Region"
+                          isSearchable
+                        />
+                      )}
+                    />
+                    {errors.region && (
+                      <small className="text-danger">Region is required</small>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">House Address:</label>
+                    <input
+                      type="text"
+                      {...register("address", { required: true })}
+                      className="form-control"
+                      placeholder="Enter House Address"
+                    />
+                    {errors.address && (
+                      <small className="text-danger">Enter House Address</small>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="row gx-3">
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Next of kin:</label>
+                    <input
+                      type="text"
+                      {...register("next_of_kin", { required: true })}
+                      className="form-control"
+                      placeholder="Enter Next of kin"
+                    />
+                    {errors.next_of_kin && (
+                      <small className="text-danger">Enter Next of kin</small>
+                    )}
+                  </div>
+                </div>
+                <div className="col-lg-6 col-sm-4 col-12">
+                  <div className="mb-3">
+                    <label className="form-label">Emergency Contact:</label>
+                    <input
+                      type="text"
+                      {...register("emergency", { required: true })}
+                      className="form-control"
+                      placeholder="Enter Emergency Contact"
+                    />
+                    {errors.emergency && (
+                      <small className="text-danger">Enter Emergency Contact</small>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           )}
